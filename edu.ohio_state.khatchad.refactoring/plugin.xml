@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.refactoringContributions">
+      <contribution
+            class="edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoringContribution"
+            id="org.eclipse.convert.fields.to.enum.contribution"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.jdt.core.IField"
+            adaptable="true"
+            id="org.eclipse.convert.fields.to.enum.object.contribution">
+         <action
+               label="Convert Constants to Enum"
+               class="edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumAction"
+               menubarPath="org.eclipse.jdt.ui.refactoring.menu/reorgGroup2"
+               enablesFor="+"
+               id="org.eclipse.convert.fields.to.enum.popup">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            description="Converts a set of primitive fields to Java Enumerated types."
+            id="org.eclipse.refactoring.convert.fields.to.enum.actionSet"
+            label="Convert Constants to Enum"
+            visible="true">
+         <action
+               class="edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumAction"
+               definitionId="org.eclipse.convert.fields.to.enum"
+               enablesFor="+"
+               helpContextId="org.eclipse.refactoring.ConvertFieldsToEnum.help"
+               id="org.eclipse.refactoring.ConvertFieldsToEnum.action"
+               label="Convert Constants to Enum..."
+               menubarPath="org.eclipse.jdt.ui.refactoring.menu/reorgGroup2"
+               style="push"
+               tooltip="Convert Constants to Enum"/>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            description="Convert a set of fields to Java Enumerated types."
+            id="org.eclipse.refactoring.category"
+            name="Convert Constants to Enum"/>
+      <command
+            categoryId="org.eclipse.refactoring.category"
+            description="Converts a set of primitive fields to Java Enumerated types."
+            id="org.eclipse.convert.fields.to.enum"
+            name="Convert Constants to Enum"/>
+   </extension>
+
+</plugin>
