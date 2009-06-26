@@ -1,0 +1,6 @@
+To implement test cases:
+- Plugin dependencies must include the following plugins:
+
+	org.eclipse.jdt.ui.tests (R3_3_maintenance)
+	org.eclipse.jdt.ui.tests.refactoring (R3_3_maintenance)
+	org.eclipse.test.performance (R3_3_maintenance) 
