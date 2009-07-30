@@ -27,23 +27,36 @@ public class ConvertConstantsToEnumAction implements
 	 * The fields selected to be converted to enum.
 	 */
 	private final Collection selectedFields = new HashSet();
+	
+	/**
+	 * The workbench window.
+	 */
+	private IWorkbenchWindow window;
 
 	public void dispose() {
+		// Do nothing
 	}
 
 	public void init(IWorkbenchWindow window) {
+		this.window = window;
 	}
 
 	/*
 	 * TODO: Just a simulation for testing purposes. Should really be using a UI
 	 * wizard instead of forcing the change to create itself.
+	 * Update: currently working on this -Raffi 7/30/09.
 	 * 
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		if (!this.selectedFields.isEmpty()) {
+		if (!this.selectedFields.isEmpty() && this.window != null) {
+
 			final ConvertConstantsToEnumRefactoring refactoring = new ConvertConstantsToEnumRefactoring(
 					this.selectedFields);
+			/*
+			 * TODO: This is the code to execute the actual refactoring. In the future, we will place this code inside the wizard.
+			 */
+			/*
 			try {
 				final RefactoringStatus status = refactoring
 						.checkInitialConditions(new NullProgressMonitor());
@@ -59,14 +72,12 @@ public class ConvertConstantsToEnumAction implements
 						.createChange(new NullProgressMonitor());
 				change.perform(new NullProgressMonitor());
 			} catch (final CoreException E) {
-				throw new RuntimeException(E);
+				throw new RuntimeException(E); //TODO: Ugly.
 			}
-			/*
-			 * TODO: Create UI Wizad here.
-			 */
-			// run(new ConvertFieldsToEnumWizard(refactoring,
-			// "Convert Constants to Enum"), this.window.getShell(),
-			// "Convert Constants to Enum");
+			*/
+			run(new ConvertConstantsToEnumWizard(refactoring,
+					"Convert Constants to Enum"), this.window.getShell(),
+					"Convert Constants to Enum");
 		}
 	}
 
@@ -75,7 +86,8 @@ public class ConvertConstantsToEnumAction implements
 			final RefactoringWizardOpenOperation operation = new RefactoringWizardOpenOperation(
 					wizard);
 			operation.run(parent, dialogTitle);
-		} catch (final InterruptedException exception) {
+		}
+		catch (final InterruptedException exception) {
 			// Do nothing
 		}
 	}
