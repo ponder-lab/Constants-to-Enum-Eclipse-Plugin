@@ -9,7 +9,7 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 public class ConvertConstantsToEnumDescriptor extends RefactoringDescriptor {
 
-	public static final String REFACTORING_ID = "edu.ohio_state.khatchad.refactoring.convert.fields.to.enum";
+	public static final String REFACTORING_ID = "edu.ohio_state.khatchad.refactoring.convert.fields.to.enum"; //$NON-NLS-1$
 
 	private final Map fArguments;
 

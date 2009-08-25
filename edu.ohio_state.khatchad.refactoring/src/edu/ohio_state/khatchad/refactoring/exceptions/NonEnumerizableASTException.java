@@ -25,27 +25,27 @@ public class NonEnumerizableASTException extends NonEnumerizableException {
 		final StringBuffer ret = new StringBuffer();
 
 		ret.append(icu.getJavaProject().getProject().getName());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 
 		ret.append(root.getPackage() != null ? root.getPackage().getName()
-				+ "." + icu.getElementName() : icu.getElementName());
+				+ "." + icu.getElementName() : icu.getElementName()); //$NON-NLS-1$
 
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(root.getLineNumber(this.problem.getStartPosition()));
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.problem.getStartPosition());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.problem.getLength());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.getClass().getName());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.getMessage());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(ASTNode.nodeClassForType(this.problem.getNodeType())
 				.getName());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.problem.toString().replace('\n', ' '));
-		ret.append("\t\t\t");
+		ret.append("\t\t\t"); //$NON-NLS-1$
 
 		return ret.toString();
 	}

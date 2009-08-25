@@ -18,23 +18,23 @@ public class BinaryElementEncounteredException extends
 		final StringBuffer ret = new StringBuffer();
 
 		ret.append(this.problemElement.getJavaProject().getProject().getName());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.problemElement.getHandleIdentifier());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(-1);
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(-1);
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(-1);
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.getClass().getName());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.getMessage());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.problemElement.getClass().getName());
-		ret.append("\t");
+		ret.append("\t"); //$NON-NLS-1$
 		ret.append(this.problemElement);
-		ret.append("\t\t\t");
+		ret.append("\t\t\t"); //$NON-NLS-1$
 
 		return ret.toString();
 	}

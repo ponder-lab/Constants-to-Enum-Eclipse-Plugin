@@ -31,10 +31,10 @@ public class ValuedComputationNode extends ComputationNode {
 	}
 
 	public String toString() {
-		final StringBuffer ret = new StringBuffer("(" + this.getNodeSymbol());
+		final StringBuffer ret = new StringBuffer("(" + this.getNodeSymbol()); //$NON-NLS-1$
 		for (final Iterator it = this.children.iterator(); it.hasNext();)
 			ret.append(it.next());
-		ret.append(")");
+		ret.append(")"); //$NON-NLS-1$
 		return ret.toString();
 	}
 }

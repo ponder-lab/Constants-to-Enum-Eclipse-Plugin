@@ -1,5 +1,6 @@
 package edu.ohio_state.khatchad.refactoring;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -173,7 +174,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			throws CoreException, OperationCanceledException {
 		final RefactoringStatus status = new RefactoringStatus();
 		try {
-			monitor.beginTask("Checking preconditions...", 2);
+			monitor.beginTask(Messages.ConvertConstantsToEnumRefactoring_CheckingPreconditions, 2);
 
 			final IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
 			this.computer = new EnumerizationComputer(this.fieldsToRefactor,
@@ -325,7 +326,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 					1);
 			try {
 				final Set set = projects.keySet();
-				subMonitor.beginTask("Compiling source ...", set.size());
+				subMonitor.beginTask(Messages.ConvertConstantsToEnumRefactoring_CompilingSource, set.size());
 
 				for (final Iterator it = set.iterator(); it.hasNext();) {
 					final IJavaProject project = (IJavaProject) it.next();
@@ -355,70 +356,66 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			throws CoreException, OperationCanceledException {
 		final RefactoringStatus status = new RefactoringStatus();
 		try {
-			monitor.beginTask("Checking preconditions...", 1);
+			monitor.beginTask(Messages.ConvertConstantsToEnumRefactoring_CheckingPreconditions, 1);
 			if (this.fieldsToRefactor.isEmpty())
 				status
 						.merge(RefactoringStatus
-								.createFatalErrorStatus("Fields have not been specified."));
+								.createFatalErrorStatus(Messages.ConvertConstantsToEnumRefactoring_FieldsHaveNotBeenSpecified));
 
 			else {
 				for (final Iterator it = this.fieldsToRefactor.iterator(); it
 						.hasNext();) {
 					final IField field = (IField) it.next();
 					if (!field.exists()) {
-						status.addWarning("Field ''" + field.getElementName()
-								+ "'' does not exist.");
+						String message = Messages.ConvertConstantsToEnumRefactoring_FileDoesNotExist;
+						status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
 						it.remove();
 					}
 
 					else if (!field.isBinary()
 							&& !field.getCompilationUnit().isStructureKnown()) {
-						status.addWarning("Compilation unit ''"
-								+ field.getCompilationUnit().getElementName()
-								+ "'' contains compile errors.");
+						String message = Messages.ConvertConstantsToEnumRefactoring_CUContainsCompileErrors;
+						status.addWarning(MessageFormat.format(message, new Object[] {field.getCompilationUnit().getElementName()}));
 						it.remove();
 					}
 
-					else if (field.getElementName().equals("serialVersionUID")) {
-						status.addWarning("Field ''" + field.getElementName()
-								+ "'' is not eligible for enumerization.");
+					else if (field.getElementName().equals("serialVersionUID")) { //$NON-NLS-1$
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldNotEligibleForEnum;
+						status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
 						it.remove();
 					}
 
 					else if (Signature.getTypeSignatureKind(field
 							.getTypeSignature()) != Signature.BASE_TYPE_SIGNATURE) {
-						status.addWarning("Field ''" + field.getElementName()
-								+ "'' must be a primitive type.");
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldMustBePrimitive;
+						status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
 						it.remove();
 					}
 
 					else if (!Util.isConstantField(field)) {
-						status.addFatalError("Field ''"
-								+ field.getElementName()
-								+ "'' is not a static final constant field.");
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldIsNotAConstant;
+						status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
 						it.remove();
 					}
 
 					else if (Flags.isVolatile(field.getFlags())
 							|| Flags.isTransient(field.getFlags())) {
-						status
-								.addWarning("Field ''"
-										+ field.getElementName()
-										+ "'' is modified in such a way that it can not be expressed as an Enum constant.");
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldCannotBeExpressedAsEnum;
+						status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
 						it.remove();
 					}
 
 					if (Signature.getElementType(field.getTypeSignature()) == Signature.SIG_BOOLEAN) {
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldIsBoolean;
 						status
-								.addWarning("Field ''"
-										+ field.getElementName()
-										+ "'' is of type boolean however this plug-in's behavior is not defined for such types.");
+								.addWarning(message);
+						status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
 						it.remove();
 					}
 				}
 				if (this.fieldsToRefactor.isEmpty())
 					status
-							.addFatalError("No fields have passed precondition checking.");
+							.addFatalError(Messages.ConvertConstantsToEnumRefactoring_PreconditionFailed);
 			}
 
 		} finally {
@@ -430,14 +427,14 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	public Change createChange(IProgressMonitor monitor) throws CoreException,
 			OperationCanceledException {
 		try {
-			monitor.beginTask("Creating change...", 1);
+			monitor.beginTask(Messages.ConvertConstantsToEnumRefactoring_CreatingChange, 1);
 			final Collection changes = this.changes.values();
 			final CompositeChange change = new CompositeChange(this.getName(),
 					(Change[]) changes.toArray(new Change[changes.size()])) {
 				public ChangeDescriptor getDescriptor() {
 					String project = ConvertConstantsToEnumRefactoring.this
 							.getJavaProject().getElementName();
-					String description = "Convert Constants to Enum";
+					String description = Messages.ConvertConstantsToEnum_Name;
 					Map arguments = new HashMap();
 					return new RefactoringChangeDescriptor(
 							new ConvertConstantsToEnumDescriptor(project,
@@ -451,7 +448,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	}
 
 	public String getName() {
-		return "Convert Constants to Enum";
+		return Messages.ConvertConstantsToEnum_Name;
 	}
 
 	public RefactoringStatus initialize(Map arguments) {
@@ -604,7 +601,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			 ******************************************************************/
 			if (!(Flags.isPublic(flag) || Flags.isPackageDefault(flag)))
 				status
-						.addFatalError("New independent enum type must have visibiliies of either public or package default.");
+						.addFatalError(Messages.ConvertConstantsToEnumRefactoring_EnumTypeMustHaveCorrectVisibility);
 
 			EnumDeclaration newEnumDeclaration = null;
 			// only add modifier if it is not package default.
@@ -711,11 +708,10 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 				.flattenForest(this.computer.getEnumerizationForest());
 		for (final Iterator it = this.fieldsToRefactor.iterator(); it.hasNext();) {
 			final IField field = (IField) it.next();
-			if (!enumerizableElements.contains(field))
-				ret
-						.addWarning("Field ''"
-								+ field.getElementName()
-								+ "'' has been deemed not to be enumerizable and therefore in its current state can not be refactored by this plugin");
+			if (!enumerizableElements.contains(field)) {
+				String message = Messages.ConvertConstantsToEnumRefactoring_RefactoringNotPossible;
+				ret.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
+			}
 		}
 		return ret;
 	}
@@ -726,7 +722,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		for (final Iterator it = this.computer.getEnumerizationForest()
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
-			this.packageNames.put(col, "some.package" + counter++);
+			this.packageNames.put(col, "some.package" + counter++); //$NON-NLS-1$
 		}
 	}
 
@@ -736,7 +732,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		for (final Iterator it = this.computer.getEnumerizationForest()
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
-			this.simpleTypeNames.put(col, "NewEnumType" + counter++);
+			this.simpleTypeNames.put(col, "NewEnumType" + counter++); //$NON-NLS-1$
 		}
 	}
 
@@ -764,7 +760,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			if (change == null) {
 				change = new TextFileChange(unit.getElementName(), (IFile) unit
 						.getResource());
-				change.setTextType("java");
+				change.setTextType("java"); //$NON-NLS-1$
 				change.setEdit(edit);
 			} else
 				change.getEdit().addChild(edit);
@@ -788,13 +784,10 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 		// Must be simple name node.
 		if (result.getNodeType() != ASTNode.SIMPLE_NAME) {
-			final String errorMessage = "Internal error: node ''"
-					+ node
-					+ "'' must be of a simple name type, instead its type was ''"
-					+ node.getClass() + "''";
+			final String errorMessage = Messages.ConvertConstantsToEnumRefactoring_WrongType;
 			status
 					.merge(RefactoringStatus
-							.createFatalErrorStatus(errorMessage));
+							.createFatalErrorStatus(MessageFormat.format(errorMessage,new Object[] {node, node.getClass()})));
 			final IStatus stateStatus = new InternalStateStatus(IStatus.ERROR,
 					errorMessage);
 			throw new CoreException(stateStatus);
@@ -896,7 +889,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 		final MethodInvocation newInvocation = ast.newMethodInvocation();
 		newInvocation.setExpression(leftExpCopy);
-		newInvocation.setName(ast.newSimpleName("compareTo"));
+		newInvocation.setName(ast.newSimpleName("compareTo")); //$NON-NLS-1$
 		newInvocation.arguments().add(rightExpCopy);
 
 		astRewrite.replace(ie.getLeftOperand(), newInvocation, null);
