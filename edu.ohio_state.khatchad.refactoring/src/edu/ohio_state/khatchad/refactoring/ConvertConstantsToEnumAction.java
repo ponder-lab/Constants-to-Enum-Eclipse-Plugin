@@ -3,22 +3,15 @@ package edu.ohio_state.khatchad.refactoring;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-
-import edu.ohio_state.khatchad.refactoring.core.InternalStateStatus;
 
 public class ConvertConstantsToEnumAction implements
 		IWorkbenchWindowActionDelegate {
@@ -76,8 +69,8 @@ public class ConvertConstantsToEnumAction implements
 			}
 			*/
 			run(new ConvertConstantsToEnumWizard(refactoring,
-					"Convert Constants to Enum"), this.window.getShell(),
-					"Convert Constants to Enum");
+					Messages.ConvertConstantsToEnum_Name), this.window.getShell(),
+					Messages.ConvertConstantsToEnum_Name);
 		}
 	}
 

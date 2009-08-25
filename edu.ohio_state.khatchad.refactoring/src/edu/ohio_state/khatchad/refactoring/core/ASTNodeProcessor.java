@@ -52,6 +52,7 @@ import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.jdt.internal.core.SourceRange;
 
+import edu.ohio_state.khatchad.refactoring.Messages;
 import edu.ohio_state.khatchad.refactoring.exceptions.DefinitelyNotEnumerizableException;
 import edu.ohio_state.khatchad.refactoring.exceptions.DefinitelyNotEnumerizableOperationException;
 import edu.ohio_state.khatchad.refactoring.exceptions.NonEnumerizableASTException;
@@ -137,7 +138,7 @@ public class ASTNodeProcessor {
 		// boxing.
 		if (this.name != null && this.name.resolveBoxing())
 			throw new NonEnumerizableASTException(
-					"Encountered boxed expression.", this.name);
+					Messages.ASTNodeProcessor_EncounteredBoxedExpression, this.name);
 
 		if (this.name != null)
 			this.process(this.name);
@@ -175,7 +176,7 @@ public class ASTNodeProcessor {
 		final IMethod top = Util.getTopMostSourceMethod(meth, this.monitor);
 
 		if (top == null)
-			throw new DefinitelyNotEnumerizableException("Source not present.",
+			throw new DefinitelyNotEnumerizableException(Messages.ASTNodeProcessor_SourceNotPresent,
 					ctorCall);
 		else
 			this.findFormalsForVariable(top, paramNumber);
@@ -188,7 +189,7 @@ public class ASTNodeProcessor {
 		final IMethod top = Util.getTopMostSourceMethod(meth, this.monitor);
 
 		if (top == null)
-			throw new DefinitelyNotEnumerizableException("Source not present.",
+			throw new DefinitelyNotEnumerizableException(Messages.ASTNodeProcessor_SourceNotPresent,
 					ctorCall);
 		else
 			this.findFormalsForVariable(top, getParamNumber(ctorCall
@@ -212,7 +213,7 @@ public class ASTNodeProcessor {
 		final IMethod top = Util.getTopMostSourceMethod(meth, this.monitor);
 
 		if (top == null)
-			throw new DefinitelyNotEnumerizableException("Source not present.",
+			throw new DefinitelyNotEnumerizableException(Messages.ASTNodeProcessor_SourceNotPresent,
 					mi);
 		else
 			this.findFormalsForVariable(top, getParamNumber(mi.arguments(),
@@ -226,7 +227,7 @@ public class ASTNodeProcessor {
 		final IMethod top = Util.getTopMostSourceMethod(meth, this.monitor);
 
 		if (top == null)
-			throw new DefinitelyNotEnumerizableException("Source not present.",
+			throw new DefinitelyNotEnumerizableException(Messages.ASTNodeProcessor_SourceNotPresent,
 					ctorCall);
 		else
 			this.findFormalsForVariable(top, getParamNumber(ctorCall
@@ -240,7 +241,7 @@ public class ASTNodeProcessor {
 		final IMethod top = Util.getTopMostSourceMethod(meth, this.monitor);
 
 		if (top == null)
-			throw new DefinitelyNotEnumerizableException("Source not present.",
+			throw new DefinitelyNotEnumerizableException(Messages.ASTNodeProcessor_SourceNotPresent,
 					smi);
 		else
 			this.findFormalsForVariable(top, getParamNumber(smi.arguments(),
@@ -312,7 +313,7 @@ public class ASTNodeProcessor {
 				if (containedIn(dimension, this.name)) {
 					legal = false;
 					throw new DefinitelyNotEnumerizableException(
-							"Illegal node context.", node);
+							Messages.ASTNodeProcessor_IllegalNodeContext, node);
 				}
 			}
 
@@ -327,7 +328,7 @@ public class ASTNodeProcessor {
 			// if coming up from the index.
 			if (containedIn(access.getIndex(), this.name))
 				throw new DefinitelyNotEnumerizableException(
-						"Illegal node context.", node);
+						Messages.ASTNodeProcessor_IllegalNodeContext, node);
 			else
 				this.process(node.getParent());
 			break;
@@ -343,11 +344,11 @@ public class ASTNodeProcessor {
 			else if (!Util.isSuspiciousAssignmentOperator(assignment
 					.getOperator()))
 				throw new DefinitelyNotEnumerizableOperationException(
-						"Illegal assignment expression.", assignment
+						Messages.ASTNodeProcessor_IllegalAssignmentExpression, assignment
 								.getOperator(), node);
 			else
 				throw new NonEnumerizableASTException(
-						"Illegal assignment expression.", node);
+						Messages.ASTNodeProcessor_IllegalAssignmentExpression, node);
 			break;
 		}
 
@@ -359,11 +360,11 @@ public class ASTNodeProcessor {
 				final IJavaElement elem = vdf.resolveBinding().getJavaElement();
 				if (elem.isReadOnly() || vdf.getName().resolveBoxing())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", vdf);
+							Messages.ASTNodeProcessor_SourceNotPresent, vdf);
 				if (vdf.resolveBinding().getType().isEqualTo(
-						node.getAST().resolveWellKnownType("java.lang.Object")))
+						node.getAST().resolveWellKnownType("java.lang.Object"))) //$NON-NLS-1$
 					throw new NonEnumerizableASTException(
-							"Illegal array upcast.", vdf);
+							Messages.ASTNodeProcessor_IllegalArrayUpcast, vdf);
 				this.found.add(elem);
 				this.processExpression(vdf.getInitializer());
 			}
@@ -376,14 +377,14 @@ public class ASTNodeProcessor {
 			if (!this.constFields.contains(elem)) {
 				if (elem == null || vdf == null || vdf.getName() == null)
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				if (elem.isReadOnly() || vdf.getName().resolveBoxing())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				if (vdf.resolveBinding().getType().isEqualTo(
-						node.getAST().resolveWellKnownType("java.lang.Object")))
+						node.getAST().resolveWellKnownType("java.lang.Object"))) //$NON-NLS-1$
 					throw new NonEnumerizableASTException(
-							"Illegal array upcast.", vdf);
+							Messages.ASTNodeProcessor_IllegalArrayUpcast, vdf);
 				this.found.add(elem);
 				this.processExpression(vdf.getInitializer());
 			}
@@ -399,12 +400,12 @@ public class ASTNodeProcessor {
 				if (!this.constFields.contains(elem)) {
 					if (elem.isReadOnly() || vdf.getName().resolveBoxing())
 						throw new DefinitelyNotEnumerizableException(
-								"Source not present.", vdf);
+								Messages.ASTNodeProcessor_SourceNotPresent, vdf);
 					if (vdf.resolveBinding().getType().isEqualTo(
 							node.getAST().resolveWellKnownType(
-									"java.lang.Object")))
+									"java.lang.Object"))) //$NON-NLS-1$
 						throw new NonEnumerizableASTException(
-								"Illegal array upcast.", vdf);
+								Messages.ASTNodeProcessor_IllegalArrayUpcast, vdf);
 					this.found.add(elem);
 					this.processExpression(vdf.getInitializer());
 				}
@@ -428,10 +429,10 @@ public class ASTNodeProcessor {
 
 			else if (!Util.isSuspiciousInfixOperator(op))
 				throw new DefinitelyNotEnumerizableOperationException(
-						"Illegal infix expression.", op, node);
+						Messages.ASTNodeProcessor_IllegalInfixExpression, op, node);
 			else
 				throw new NonEnumerizableOperationException(
-						"Illegal infix expression.", op, node);
+						Messages.ASTNodeProcessor_IllegalInfixExpression, op, node);
 			break;
 		}
 
@@ -473,12 +474,12 @@ public class ASTNodeProcessor {
 
 			if (top == null)
 				throw new DefinitelyNotEnumerizableException(
-						"Source not present.", node);
+						Messages.ASTNodeProcessor_SourceNotPresent, node);
 			else {
 				// Find the topmost method.
 				if (top.isReadOnly())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 
 				this.found.add(top);
 			}
@@ -515,7 +516,7 @@ public class ASTNodeProcessor {
 				// if we don't have the source, no can do.
 				if (!ctorCall.getType().resolveBinding().isFromSource())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				else
 					// go find the formals.
 					this.findFormalsForVariable(ctorCall);
@@ -530,7 +531,7 @@ public class ASTNodeProcessor {
 				if (!ctorCall.resolveConstructorBinding().getDeclaringClass()
 						.isFromSource())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				else
 					// go find the formals.
 					this.findFormalsForVariable(ctorCall);
@@ -545,7 +546,7 @@ public class ASTNodeProcessor {
 				if (!ctorCall.resolveConstructorBinding().getDeclaringClass()
 						.isFromSource())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				else
 					// go find the formals.
 					this.findFormalsForVariable(ctorCall);
@@ -560,7 +561,7 @@ public class ASTNodeProcessor {
 				if (!smi.resolveMethodBinding().getDeclaringClass()
 						.isFromSource())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				else
 					// go find the formals.
 					this.findFormalsForVariable(smi);
@@ -576,7 +577,7 @@ public class ASTNodeProcessor {
 				if (!mi.resolveMethodBinding().getDeclaringClass()
 						.isFromSource())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				else
 					// go find the formals.
 					this.findFormalsForVariable(mi);
@@ -599,10 +600,10 @@ public class ASTNodeProcessor {
 
 			if (elem.isReadOnly() || svd.getName().resolveBoxing())
 				throw new DefinitelyNotEnumerizableException(
-						"Source not present.", node);
+						Messages.ASTNodeProcessor_SourceNotPresent, node);
 			if (svd.resolveBinding().getType().isEqualTo(
-					node.getAST().resolveWellKnownType("java.lang.Object")))
-				throw new NonEnumerizableASTException("Illegal array upcast.",
+					node.getAST().resolveWellKnownType("java.lang.Object"))) //$NON-NLS-1$
+				throw new NonEnumerizableASTException(Messages.ASTNodeProcessor_IllegalArrayUpcast,
 						svd);
 
 			this.found.add(elem);
@@ -620,7 +621,7 @@ public class ASTNodeProcessor {
 
 		case ASTNode.CAST_EXPRESSION: {
 			final CastExpression cast = (CastExpression) node;
-			throw new NonEnumerizableCastExpression("Illegal node context.",
+			throw new NonEnumerizableCastExpression(Messages.ASTNodeProcessor_IllegalNodeContext,
 					node, cast.getExpression().resolveTypeBinding(), cast
 							.getType().resolveBinding());
 		}
@@ -633,11 +634,11 @@ public class ASTNodeProcessor {
 		case ASTNode.POSTFIX_EXPRESSION:
 		case ASTNode.PREFIX_EXPRESSION: {
 			throw new DefinitelyNotEnumerizableException(
-					"Illegal node context.", node);
+					Messages.ASTNodeProcessor_IllegalNodeContext, node);
 		}
 
 		default: {
-			throw new NonEnumerizableASTException("Illegal node context.", node);
+			throw new NonEnumerizableASTException(Messages.ASTNodeProcessor_IllegalNodeContext, node);
 		}
 		}
 	}
@@ -653,17 +654,17 @@ public class ASTNodeProcessor {
 
 			if (name.resolveBinding().getJavaElement() == null)
 				throw new DefinitelyNotEnumerizableException(
-						"Non-enumerizable type encountered.", node);
+						Messages.ASTNodeProcessor_NonEnumerizableTypeEncountered, node);
 			else {
 				final IJavaElement elem = name.resolveBinding()
 						.getJavaElement();
 				if (elem.isReadOnly() || name.resolveBoxing())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				if (name.resolveTypeBinding().isEqualTo(
-						node.getAST().resolveWellKnownType("java.lang.Object")))
+						node.getAST().resolveWellKnownType("java.lang.Object"))) //$NON-NLS-1$
 					throw new NonEnumerizableASTException(
-							"Illegal array upcast.", name);
+							Messages.ASTNodeProcessor_IllegalArrayUpcast, name);
 				this.found.add(elem);
 			}
 			break;
@@ -701,11 +702,11 @@ public class ASTNodeProcessor {
 			else if (!Util.isSuspiciousAssignmentOperator(assignment
 					.getOperator()))
 				throw new DefinitelyNotEnumerizableOperationException(
-						"Illegal assignment expression.", assignment
+						Messages.ASTNodeProcessor_IllegalAssignmentExpression, assignment
 								.getOperator(), node);
 			else
 				throw new NonEnumerizableOperationException(
-						"Illegal assignment expression.", assignment
+						Messages.ASTNodeProcessor_IllegalAssignmentExpression, assignment
 								.getOperator(), node);
 			break;
 		}
@@ -722,17 +723,17 @@ public class ASTNodeProcessor {
 
 			if (fieldAccess.resolveFieldBinding().getJavaElement() == null)
 				throw new DefinitelyNotEnumerizableException(
-						"Non-enumerizable type encountered.", node);
+						Messages.ASTNodeProcessor_NonEnumerizableTypeEncountered, node);
 			else {
 				final IJavaElement elem = fieldAccess.resolveFieldBinding()
 						.getJavaElement();
 				if (elem.isReadOnly() || fieldAccess.resolveBoxing())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				if (fieldAccess.resolveTypeBinding().isEqualTo(
-						node.getAST().resolveWellKnownType("java.lang.Object")))
+						node.getAST().resolveWellKnownType("java.lang.Object"))) //$NON-NLS-1$
 					throw new NonEnumerizableASTException(
-							"Illegal array upcast.", fieldAccess);
+							Messages.ASTNodeProcessor_IllegalArrayUpcast, fieldAccess);
 				this.found.add(elem);
 			}
 			break;
@@ -754,10 +755,10 @@ public class ASTNodeProcessor {
 
 			else if (!Util.isSuspiciousInfixOperator(op))
 				throw new DefinitelyNotEnumerizableOperationException(
-						"Illegal infix expression.", op, node);
+						Messages.ASTNodeProcessor_IllegalInfixExpression, op, node);
 			else
 				throw new NonEnumerizableOperationException(
-						"Illegal infix expression.", op, node);
+						Messages.ASTNodeProcessor_IllegalInfixExpression, op, node);
 			break;
 		}
 
@@ -769,11 +770,11 @@ public class ASTNodeProcessor {
 
 			if (top == null)
 				throw new DefinitelyNotEnumerizableException(
-						"Source not present.", node);
+						Messages.ASTNodeProcessor_SourceNotPresent, node);
 			else {
 				if (top.isReadOnly())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				this.found.add(top);
 			}
 			break;
@@ -791,10 +792,10 @@ public class ASTNodeProcessor {
 					.getJavaElement();
 			if (elem.isReadOnly() || superFieldAccess.resolveBoxing())
 				throw new DefinitelyNotEnumerizableException(
-						"Source not present.", node);
+						Messages.ASTNodeProcessor_SourceNotPresent, node);
 			if (superFieldAccess.resolveTypeBinding().isEqualTo(
-					node.getAST().resolveWellKnownType("java.lang.Object")))
-				throw new NonEnumerizableASTException("Illegal array upcast.",
+					node.getAST().resolveWellKnownType("java.lang.Object"))) //$NON-NLS-1$
+				throw new NonEnumerizableASTException(Messages.ASTNodeProcessor_IllegalArrayUpcast,
 						superFieldAccess);
 			this.found.add(elem);
 			break;
@@ -808,11 +809,11 @@ public class ASTNodeProcessor {
 
 			if (top == null)
 				throw new DefinitelyNotEnumerizableException(
-						"Source not present.", node);
+						Messages.ASTNodeProcessor_SourceNotPresent, node);
 			else {
 				if (top.isReadOnly())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", node);
+							Messages.ASTNodeProcessor_SourceNotPresent, node);
 				this.found.add(top);
 			}
 			break;
@@ -827,11 +828,11 @@ public class ASTNodeProcessor {
 				final IJavaElement elem = vdf.resolveBinding().getJavaElement();
 				if (elem.isReadOnly() || vdf.getName().resolveBoxing())
 					throw new DefinitelyNotEnumerizableException(
-							"Source not present.", vdf);
+							Messages.ASTNodeProcessor_SourceNotPresent, vdf);
 				if (vdf.resolveBinding().getType().isEqualTo(
-						node.getAST().resolveWellKnownType("java.lang.Object")))
+						node.getAST().resolveWellKnownType("java.lang.Object"))) //$NON-NLS-1$
 					throw new NonEnumerizableASTException(
-							"Illegal array upcast.", vdf);
+							Messages.ASTNodeProcessor_IllegalArrayUpcast, vdf);
 				this.found.add(elem);
 			}
 			break;
@@ -839,7 +840,7 @@ public class ASTNodeProcessor {
 
 		case ASTNode.CAST_EXPRESSION: {
 			final CastExpression cast = (CastExpression) node;
-			throw new NonEnumerizableCastExpression("Illegal node context.",
+			throw new NonEnumerizableCastExpression(Messages.ASTNodeProcessor_IllegalNodeContext,
 					node, cast.getExpression().resolveTypeBinding(), cast
 							.getType().resolveBinding());
 		}
@@ -852,11 +853,11 @@ public class ASTNodeProcessor {
 		case ASTNode.POSTFIX_EXPRESSION:
 		case ASTNode.PREFIX_EXPRESSION: {
 			throw new DefinitelyNotEnumerizableException(
-					"Illegal node context.", node);
+					Messages.ASTNodeProcessor_IllegalNodeContext, node);
 		}
 
 		default: {
-			throw new NonEnumerizableASTException("Illegal expression.", node);
+			throw new NonEnumerizableASTException(Messages.ASTNodeProcessor_IllegalExpression, node);
 		}
 		}
 	}

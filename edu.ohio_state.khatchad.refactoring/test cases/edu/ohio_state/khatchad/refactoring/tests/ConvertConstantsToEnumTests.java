@@ -20,7 +20,7 @@ public class ConvertConstantsToEnumTests //extends RefactoringTest
 {
 	private static final Class clazz= ConvertConstantsToEnumTests.class;
 	
-	private static final String REFACTORING_PATH = "ConvertConstantsToEnum/";
+	private static final String REFACTORING_PATH = "ConvertConstantsToEnum/"; //$NON-NLS-1$
 	
 	public static Test suite() {
 //		return new Java15Setup(new TestSuite(clazz));

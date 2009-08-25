@@ -21,8 +21,8 @@ public class DefinitelyNotEnumerizableOperationException extends
 	public String toString() {
 		final StringBuffer ret = new StringBuffer(super.toString());
 		ret.delete(ret.length() - 3, ret.length());
-		ret.append("\t" + this.operator);
-		ret.append("\t\t");
+		ret.append("\t" + this.operator); //$NON-NLS-1$
+		ret.append("\t\t"); //$NON-NLS-1$
 		return ret.toString();
 	}
 

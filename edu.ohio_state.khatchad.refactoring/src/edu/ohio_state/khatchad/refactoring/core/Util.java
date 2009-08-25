@@ -31,6 +31,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.internal.corext.refactoring.rename.MethodChecks;
 
+import edu.ohio_state.khatchad.refactoring.Messages;
 import edu.ohio_state.khatchad.refactoring.exceptions.BinaryElementEncounteredException;
 import edu.ohio_state.khatchad.refactoring.visitor.TreeTrimingVisitor;
 
@@ -78,7 +79,7 @@ public class Util {
 		final IMember mem = getIMember(elem);
 		final ICompilationUnit icu = mem.getCompilationUnit();
 		if (icu == null)
-			throw new BinaryElementEncounteredException("Source not present.",
+			throw new BinaryElementEncounteredException(Messages.ASTNodeProcessor_SourceNotPresent,
 					mem);
 		final ASTNode root = Util.getCompilationUnit(icu, monitor);
 		return root;
@@ -140,7 +141,7 @@ public class Util {
 			return Flags.AccProtected;
 		else
 			throw new IllegalArgumentException(
-					"Members are not of a valid visibility.");
+					Messages.Util_InvalidMemberVisibility);
 	}
 
 	public static Collection getDistinctSets(Collection elementSets)
@@ -216,7 +217,7 @@ public class Util {
 
 		if (elem == null)
 			throw new IllegalArgumentException(
-					"Can not get IMember from null element.");
+					Messages.Util_MemberNotFound);
 
 		switch (elem.getElementType()) {
 		case IJavaElement.METHOD:

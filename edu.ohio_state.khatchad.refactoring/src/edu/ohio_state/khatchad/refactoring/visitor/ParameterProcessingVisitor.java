@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 import org.eclipse.jdt.core.dom.SuperMethodInvocation;
 
+import edu.ohio_state.khatchad.refactoring.Messages;
 import edu.ohio_state.khatchad.refactoring.exceptions.DefinitelyNotEnumerizableException;
 import edu.ohio_state.khatchad.refactoring.exceptions.NonEnumerizableASTException;
 
@@ -71,10 +72,10 @@ public class ParameterProcessingVisitor extends ASTVisitor {
 			final IJavaElement elem = svd.resolveBinding().getJavaElement();
 			if (elem.isReadOnly() || svd.getName().resolveBoxing())
 				throw new DefinitelyNotEnumerizableException(
-						"Source not present.", svd);
+						Messages.ASTNodeProcessor_SourceNotPresent, svd);
 			if (svd.resolveBinding().getType().isEqualTo(
-					node.getAST().resolveWellKnownType("java.lang.Object")))
-				throw new NonEnumerizableASTException("Illegal array upcast.",
+					node.getAST().resolveWellKnownType("java.lang.Object"))) //$NON-NLS-1$
+				throw new NonEnumerizableASTException(Messages.ASTNodeProcessor_IllegalArrayUpcast,
 						svd);
 			this.elements.add(elem);
 		}

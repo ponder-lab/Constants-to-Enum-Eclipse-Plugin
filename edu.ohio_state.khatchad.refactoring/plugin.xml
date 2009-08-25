@@ -10,13 +10,13 @@
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
-            description="Converts a set of primitive fields to Java Enumerated types."
+            description="%ConvertConstantsToEnumActionSetDescription"
             id="org.eclipse.refactoring.convert.fields.to.enum.actionSet"
-            label="Convert Constants to Enum"
+            label="%ConvertConstantsToEnumActionSetLabel"
             visible="true">
          <menu
                id="edu.ohio_state.khatchad.refactoring.menu"
-               label="Refactoring &amp;Testing"
+               label="%ConvertConstantsToEnumMenuLabel"
                path="edit">
             <separator name="convertConstantsToEnum"/>
          </menu>
@@ -26,23 +26,23 @@
                enablesFor="+"
                helpContextId="org.eclipse.refactoring.ConvertFieldsToEnum.help"
                id="org.eclipse.refactoring.ConvertFieldsToEnum.action"
-               label="Convert Constants to Enum..."
+               label="%ConvertConstantsToEnumLabel"
                menubarPath="edu.ohio_state.khatchad.refactoring.menu/convertConstantsToEnum"
                style="push"
-               tooltip="Convert Constants to Enum"/>
+               tooltip="%ConvertConstantsToEnumToolTip"/>
       </actionSet>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <category
-            description="Convert a set of fields to Java Enumerated types."
+            description="%ConvertFieldsToEnum"
             id="org.eclipse.refactoring.category"
-            name="Convert Constants to Enum"/>
+            name="%ConvertConstantsToEnumCategory"/>
       <command
             categoryId="org.eclipse.refactoring.category"
-            description="Converts a set of primitive fields to Java Enumerated types."
+            description="%ConvertConstantsToEnumDescription"
             id="org.eclipse.convert.fields.to.enum"
-            name="Convert Constants to Enum"/>
+            name="%ConvertConstantsToEnum"/>
    </extension>
    <!-- TODO: Will work on this later ...
    <extension

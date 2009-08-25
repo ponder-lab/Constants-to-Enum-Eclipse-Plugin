@@ -14,6 +14,8 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 
+import edu.ohio_state.khatchad.refactoring.Messages;
+
 public class Worklist extends LinkedHashSet implements Iterator {
 	/**
 	 * 
@@ -128,14 +130,14 @@ public class Worklist extends LinkedHashSet implements Iterator {
 	private void sanityCheck(Object e) throws JavaModelException {
 		final IJavaElement o = (IJavaElement) e;
 		if (o.isReadOnly())
-			throw new IllegalArgumentException("Illegal worklist element: " + o);
+			throw new IllegalArgumentException(Messages.Worklist_IllegalWorklistElement + o);
 
 		switch (o.getElementType()) {
 		case IJavaElement.LOCAL_VARIABLE: {
 			final ILocalVariable lv = (ILocalVariable) o;
 			final String sig = lv.getTypeSignature();
 			if (!isValidTypeSignature(sig))
-				throw new IllegalArgumentException("Illegal worklist element: "
+				throw new IllegalArgumentException(Messages.Worklist_IllegalWorklistElement
 						+ o);
 			break;
 		}
@@ -144,7 +146,7 @@ public class Worklist extends LinkedHashSet implements Iterator {
 			final IField f = (IField) o;
 			final String sig = f.getTypeSignature();
 			if (!isValidTypeSignature(sig))
-				throw new IllegalArgumentException("Illegal worklist element: "
+				throw new IllegalArgumentException(Messages.Worklist_IllegalWorklistElement
 						+ o);
 			break;
 		}
@@ -153,14 +155,14 @@ public class Worklist extends LinkedHashSet implements Iterator {
 			final IMethod m = (IMethod) o;
 			final String retType = m.getReturnType();
 			if (!isValidTypeSignature(retType))
-				throw new IllegalArgumentException("Illegal worklist element: "
+				throw new IllegalArgumentException(Messages.Worklist_IllegalWorklistElement
 						+ o);
 
 			break;
 		}
 
 		default: {
-			throw new IllegalArgumentException("Illegal worklist element: " + o);
+			throw new IllegalArgumentException(Messages.Worklist_IllegalWorklistElement + o);
 		}
 		}
 	}
