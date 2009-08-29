@@ -28,6 +28,10 @@ public class Messages extends NLS {
 	public static String ConvertConstantsToEnumRefactoring_PreconditionFailed;
 	public static String ConvertConstantsToEnumRefactoring_RefactoringNotPossible;
 	public static String ConvertConstantsToEnumRefactoring_WrongType;
+	public static String ConvertToEnumTypePage_ConstantsToExtract;
+	public static String ConvertToEnumTypePage_CountMembersSelected;
+	public static String ConvertToEnumTypePage_Description;
+	public static String ConvertToEnumTypePage_EnumName;
 	public static String EnumConstantComparator_BothObjectsMustMatch;
 	public static String EnumConstantComparator_CannotCompare;
 	public static String EnumConstantComparator_CannotCompareWithoutPrimitives;
