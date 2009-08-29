@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Benjamin Muskalla and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Benjamin Muskalla - initial API and implementation
+ *******************************************************************************/
 package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.util.ArrayList;
@@ -8,68 +18,34 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
-import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoring;
-import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumWizard;
-import edu.ohio_state.khatchad.refactoring.Messages;
+import edu.ohio_state.khatchad.refactoring.RefactoringPlugin;
+
 
 public class ConvertConstantsToEnumHandler extends AbstractHandler {
 
-	/*
-	 * TODO: Just a simulation for testing purposes. Should really be using a UI
-	 * wizard instead of forcing the change to create itself.
-	 * 
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
-	 * .ExecutionEvent)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ISelection currentSelection = HandlerUtil
 				.getCurrentSelectionChecked(event);
 
 		List selectedFields = getSelectedFields(currentSelection);
-
-		final ConvertConstantsToEnumRefactoring refactoring = new ConvertConstantsToEnumRefactoring(
-				selectedFields);
-		run(new ConvertConstantsToEnumWizard(refactoring,
-				Messages.ConvertConstantsToEnum_Name), HandlerUtil
-				.getActiveShellChecked(event),
-				Messages.ConvertConstantsToEnum_Name);
+		try {
+			Shell shell = HandlerUtil.getActiveShellChecked(event);
+			IField[] fields = (IField[]) selectedFields.toArray(new IField[] {});
+			ConvertConstantsToEnumWizard.startConvertConstantsToEnumRefactoring(fields, shell);
+		} catch (final JavaModelException exception) {
+			RefactoringPlugin.log(exception);
+		}
 
 		return null;
-		/*
-		 * TODO: This is the code to execute the actual refactoring. In the
-		 * future, we will place this code inside the wizard.
-		 */
-		/*
-		 * try { final RefactoringStatus status = refactoring
-		 * .checkInitialConditions(new NullProgressMonitor());
-		 * status.merge(refactoring .checkFinalConditions(new
-		 * NullProgressMonitor())); if (status.hasFatalError()) throw new
-		 * CoreException( new InternalStateStatus( IStatus.ERROR, status
-		 * .getMessageMatchingSeverity(RefactoringStatus.FATAL))); final Change
-		 * change = refactoring .createChange(new NullProgressMonitor());
-		 * change.perform(new NullProgressMonitor()); } catch (final
-		 * CoreException E) { throw new RuntimeException(E); //TODO: Ugly. }
-		 */
-	}
-
-	public void run(RefactoringWizard wizard, Shell parent, String dialogTitle) {
-		try {
-			final RefactoringWizardOpenOperation operation = new RefactoringWizardOpenOperation(
-					wizard);
-			operation.run(parent, dialogTitle);
-		} catch (final InterruptedException exception) {
-			// Do nothing
-		}
 	}
 
 	private List getSelectedFields(ISelection selection) {

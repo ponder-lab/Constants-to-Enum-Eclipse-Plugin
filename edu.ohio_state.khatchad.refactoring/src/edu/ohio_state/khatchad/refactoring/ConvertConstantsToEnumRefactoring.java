@@ -75,6 +75,7 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringChangeDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEdit;
@@ -463,6 +464,10 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		this.fieldsToRefactor = fieldsToRefactor;
 	}
 
+	public Collection getFieldsToRefactor() {
+		return this.fieldsToRefactor;
+	}
+
 	private Collection extractConstants(Collection col) {
 		final Collection ret = new LinkedHashSet();
 
@@ -619,7 +624,15 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 						.newSimpleName((String) this.simpleTypeNames.get(col)),
 						enumConstantDeclarationCollection, new Object[] {});
 
-			final NewEnumWizardPage page = new NewEnumWizardPage();
+			// TODO [bm] pretty dirty hack to workaround 16: Refactoring should not use UI components for code changes
+			//			 http://code.google.com/p/constants-to-enum-eclipse-plugin/issues/detail?id=16
+			final NewEnumWizardPage[] result = new NewEnumWizardPage[1];
+			Display.getDefault().syncExec(new Runnable() {
+				public void run() {
+					result[0]= new NewEnumWizardPage();
+				}
+			});
+			NewEnumWizardPage page = result[0];
 			page.setTypeName((String) this.simpleTypeNames.get(col), false);
 
 			final IPackageFragmentRoot root = this.getPackageFragmentRoot();
