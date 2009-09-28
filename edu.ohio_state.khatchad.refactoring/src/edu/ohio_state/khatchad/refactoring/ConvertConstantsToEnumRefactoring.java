@@ -161,6 +161,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 	private final Map simpleTypeNames = new LinkedHashMap();
 
+	private String simpleTypeName = "NewEnumType"; //$NON-NLS-1$
+
 	/**
 	 * Default ctor.
 	 */
@@ -745,8 +747,16 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		for (final Iterator it = this.computer.getEnumerizationForest()
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
-			this.simpleTypeNames.put(col, "NewEnumType" + counter++); //$NON-NLS-1$
+			this.simpleTypeNames.put(col, simpleTypeName + counter++);
 		}
+	}
+
+	public String getSimpleTypeName() {
+		return simpleTypeName;
+	}
+
+	public void setSimpleTypeName(String simpleTypeName) {
+		this.simpleTypeName = simpleTypeName;
 	}
 
 	private void retrieveTypeNames() {

@@ -11,7 +11,12 @@
 package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.internal.ui.dialogs.TextFieldNavigationHandler;
 import org.eclipse.jdt.internal.ui.util.SWTUtil;
@@ -22,6 +27,7 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -75,12 +81,51 @@ public class ConvertToEnumTypePage extends UserInputWizardPage {
 
 		fNameField= new Text(parent, SWT.BORDER);
 		fNameField.addModifyListener(new ModifyListener() {
-
 			public void modifyText(ModifyEvent e) {
-//				handleNameChanged(fNameField.getText());
+				handleNameChanged(fNameField.getText());
 			}
 		});
 		fNameField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		IField[] fields = (IField[]) getConvertToEnumRefactoring().getFieldsToRefactor().toArray(new IField[] {});
+		List fieldList = new ArrayList(fields.length);
+		for (int i = 0; i < fields.length; i++) {
+			IField field = fields[i];
+			fieldList.add(field.getElementName());
+		}
+		String suggestedName = getSuggestedEnumTypeName((String[]) fieldList.toArray(new String[]{}));
+		fNameField.setText(suggestedName);
+	}
+
+	/**
+	 * Handles the name changed event.
+	 *
+	 * @param name
+	 *            the name
+	 */
+	protected void handleNameChanged(final String name) {
+		if (name != null)
+			getConvertToEnumRefactoring().setSimpleTypeName(name);
+		checkPageCompletionStatus(true);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void checkPageCompletionStatus(final boolean display) {
+		RefactoringStatus status = null;
+		try {
+			status = getConvertToEnumRefactoring().checkInitialConditions(new NullProgressMonitor());
+		} catch (OperationCanceledException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		setMessage(null);
+		if (display) {
+			setPageComplete(status);
+		} else {
+			setPageComplete(!status.hasFatalError());
+		}
 	}
 
 	protected void createFieldTableLabel(final Composite parent) {
@@ -180,6 +225,42 @@ public class ConvertToEnumTypePage extends UserInputWizardPage {
 		updateStatusLine();
 	}
 	
+	/* package */ String getSuggestedEnumTypeName(String[] fields) {
+		char[] suffix = getLongestCommonSuffix(fields).toLowerCase().toCharArray();
+		String suffixString = ""; //$NON-NLS-1$
+		if(suffix.length == 0) {
+			return suffixString;
+		}
+		suffix[0] = Character.toUpperCase(suffix[0]);
+		for (int i = 0; i < suffix.length; i++) {
+			if(suffix[i] == '_') {
+				if (i < suffix.length - 1) {
+					suffix[i+1] = Character.toUpperCase(suffix[i+1]);
+				}
+			} else {
+				suffixString += suffix[i];
+			}
+		}
+		return suffixString;
+	}
+	
+	private String getLongestCommonSuffix(String[] strings) {
+		String currentSuffix = ""; //$NON-NLS-1$
+		if(strings == null || strings.length <= 1) {
+			return currentSuffix;
+		}
+		for (int i = 0; i < strings[0].length(); i++) {
+			char currentChar = strings[0].charAt(i);
+			for (int j = 1; j < strings.length; j++) {
+				if(strings[j].charAt(i) != currentChar) {
+					return currentSuffix;
+				}
+			}
+			currentSuffix += currentChar;
+		}
+		return currentSuffix;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
