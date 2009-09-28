@@ -2,7 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Convert Constants to Enum Tests
 Bundle-SymbolicName: edu.ohio_state.khatchad.refactoring.tests
+Fragment-Host: edu.ohio_state.khatchad.refactoring
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Require-Bundle: org.junit;bundle-version="3.8.2",
  org.eclipse.jdt.ui.tests.refactoring;bundle-version="3.5.0"
+Export-Package: edu.ohio_state.khatchad.refactoring,
+ edu.ohio_state.khatchad.refactoring.ui

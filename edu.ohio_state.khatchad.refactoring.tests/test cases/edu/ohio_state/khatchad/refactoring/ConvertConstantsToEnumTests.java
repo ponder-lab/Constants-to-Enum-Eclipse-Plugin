@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.ohio_state.khatchad.refactoring.tests;
+package edu.ohio_state.khatchad.refactoring;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
