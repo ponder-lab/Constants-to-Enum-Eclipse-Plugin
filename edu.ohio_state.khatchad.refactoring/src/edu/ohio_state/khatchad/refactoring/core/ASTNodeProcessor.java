@@ -50,7 +50,7 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.core.SourceRange;
+import org.eclipse.jdt.core.SourceRange;
 
 import edu.ohio_state.khatchad.refactoring.Messages;
 import edu.ohio_state.khatchad.refactoring.exceptions.DefinitelyNotEnumerizableException;
