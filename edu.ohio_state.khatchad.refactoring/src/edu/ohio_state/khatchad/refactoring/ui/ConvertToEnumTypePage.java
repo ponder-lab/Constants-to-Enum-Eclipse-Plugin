@@ -12,12 +12,17 @@ package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.internal.ui.dialogs.TextFieldNavigationHandler;
 import org.eclipse.jdt.internal.ui.util.SWTUtil;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
@@ -27,6 +32,7 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
 import org.eclipse.swt.SWT;
@@ -41,6 +47,7 @@ import org.eclipse.swt.widgets.Text;
 
 import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoring;
 import edu.ohio_state.khatchad.refactoring.Messages;
+import edu.ohio_state.khatchad.refactoring.core.Util;
 
 public class ConvertToEnumTypePage extends UserInputWizardPage {
 
@@ -64,7 +71,7 @@ public class ConvertToEnumTypePage extends UserInputWizardPage {
 		layout.numColumns= 2;
 		composite.setLayout(layout);
 
-		createEnumTypeField(composite);
+		createEnumTypeNameField(composite);
 		createSpacer(composite);
 		createFieldTableLabel(composite);
 		createFieldTableComposite(composite);
@@ -74,7 +81,7 @@ public class ConvertToEnumTypePage extends UserInputWizardPage {
 		TextFieldNavigationHandler.install(fNameField);
 	}
 
-	private void createEnumTypeField(final Composite parent) {
+	private void createEnumTypeNameField(final Composite parent) {
 		final Label label= new Label(parent, SWT.NONE);
 		label.setText(Messages.ConvertToEnumTypePage_EnumName);
 		label.setLayoutData(new GridData());
@@ -103,8 +110,23 @@ public class ConvertToEnumTypePage extends UserInputWizardPage {
 	 *            the name
 	 */
 	protected void handleNameChanged(final String name) {
-		if (name != null)
-			getConvertToEnumRefactoring().setSimpleTypeName(name);
+		if (name != null) {
+			
+			String packageName = Util.getPackageName(name);
+			if ( packageName.isEmpty() && !getConvertToEnumRefactoring().getFieldsToRefactor().isEmpty() ) {
+				//assign package to be the package of the first constant.
+				//TODO [rk]: Done just to avoid default package for now.
+				IField field = (IField) getConvertToEnumRefactoring().getFieldsToRefactor().iterator().next();
+				IType parent = (IType) field.getParent();
+				String fullyQualifiedName = parent.getFullyQualifiedName();
+				packageName = Util.getPackageName(fullyQualifiedName);
+			}
+				
+			getConvertToEnumRefactoring().setPackageName(packageName);
+			
+			String simpleName = Util.getSimpleName(name);
+			getConvertToEnumRefactoring().setSimpleTypeName(simpleName);
+		}
 		checkPageCompletionStatus(true);
 	}
 
@@ -183,6 +205,9 @@ public class ConvertToEnumTypePage extends UserInputWizardPage {
 
 	private void setTableInput() {
 		fTableViewer.setInput(getConvertToEnumRefactoring().getFieldsToRefactor().toArray(new IField[]{}));
+		fTableViewer.setAllChecked(true);
+		updateStatusLine();
+		updateRefactoringInput();
 	}
 
 	private ConvertConstantsToEnumRefactoring getConvertToEnumRefactoring() {
@@ -221,10 +246,23 @@ public class ConvertToEnumTypePage extends UserInputWizardPage {
 			fTableViewer.getControl().setFocus();
 			fTableViewer.setSelection(selection);
 		}
+		
 //		checkPageCompletionStatus(displayErrors);
 		updateStatusLine();
+		updateRefactoringInput();
 	}
 	
+	/**
+	 * Updates the input to the refactoring to mirror the checked constants.
+	 */
+	private void updateRefactoringInput() {
+		Object[] checkedElements = this.fTableViewer.getCheckedElements();
+		List list = Arrays.asList(checkedElements);
+		ConvertConstantsToEnumRefactoring refactoring = (ConvertConstantsToEnumRefactoring) this
+				.getRefactoring();
+		refactoring.setFieldsToRefactor(list);
+	}
+
 	/* package */ String getSuggestedEnumTypeName(String[] fields) {
 		char[] suffix = getLongestCommonSuffix(fields).toLowerCase().toCharArray();
 		String suffixString = ""; //$NON-NLS-1$

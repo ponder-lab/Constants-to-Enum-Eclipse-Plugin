@@ -177,8 +177,14 @@ public class EnumerizationComputer {
 
 		final Collection candidateSets = Util
 				.getElementForest(computationForest);
-
-		this.enumerizationForest = filterSetsAccordingToMemberConstraints(candidateSets);
+		
+		//[rk] HACK: merge sets for now into one big set.
+		//TODO [rk] This plugin has the capability to make more than one enum type out of the input
+		//constants. We should leverage that. The idea is that one button should refactor the entire
+		//project.
+		Collection oneBigSet = new LinkedHashSet();
+		oneBigSet.add(Util.flattenForest(candidateSets));
+		this.enumerizationForest = filterSetsAccordingToMemberConstraints(oneBigSet);
 	}
 
 	/**
