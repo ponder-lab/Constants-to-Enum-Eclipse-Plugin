@@ -33,7 +33,7 @@ that normally prevent separate compilation.
    </license>
 
    <url>
-      <update label="Convert Constants to Enum Update Site" url="http://constants-to-enum-eclipse-plugin.googlecode.com/svn/trunk/edu.ohio_state.cse.khatchad.refactoring.updatesite"/>
+      <update label="Convert Constants to Enum Update Site" url="http://constants-to-enum-eclipse-plugin.googlecode.com/svn/edu.ohio_state.cse.khatchad.refactoring.updatesite"/>
    </url>
 
    <plugin
