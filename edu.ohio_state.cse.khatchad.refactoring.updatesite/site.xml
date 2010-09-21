@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Convert Constants to Enum Update Site" url="http://constants-to-enum-eclipse-plugin.googlecode.com/svn/trunk/edu.ohio_state.cse.khatchad.refactoring.updatesite">
+   <description name="Convert Constants to Enum Update Site" url="http://constants-to-enum-eclipse-plugin.googlecode.com/svn/edu.ohio_state.cse.khatchad.refactoring.updatesite">
       Update site for the Convert Constants to Enum refactoring.
    </description>
    <feature url="features/edu.ohio_state.cse.khatchad.refactoring.feature_0.1.0.jar" id="edu.ohio_state.cse.khatchad.refactoring.feature" version="0.1">
