@@ -378,12 +378,20 @@ public class Util {
 		 */
 	}
 
-	public static String stripQualifiedName(String qualifiedName) {
+	public static String getSimpleName(String qualifiedName) {
 		if (qualifiedName.indexOf('.') == -1)
 			return qualifiedName;
 
 		final int pos = qualifiedName.lastIndexOf('.');
 		return qualifiedName.substring(pos + 1);
+	}
+	
+	public static String getPackageName(String qualifiedName) {
+		if (qualifiedName.indexOf('.') == -1)
+			return new String(); //there is no package name, so return empty string.
+
+		final int pos = qualifiedName.lastIndexOf('.');
+		return qualifiedName.substring(0, pos);
 	}
 
 	public static Collection trimForest(Collection computationForest,

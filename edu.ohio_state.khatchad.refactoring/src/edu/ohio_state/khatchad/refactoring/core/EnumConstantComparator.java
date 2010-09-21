@@ -19,10 +19,10 @@ import edu.ohio_state.khatchad.refactoring.Messages;
  */
 public class EnumConstantComparator implements Comparator {
 
-	Map map;
+	private Map newEnumConstantToOldConstantFieldMap;
 
 	public EnumConstantComparator(Map map) {
-		this.map = map;
+		this.newEnumConstantToOldConstantFieldMap = map;
 	}
 
 	public int compare(Object o1, Object o2) {
@@ -31,8 +31,8 @@ public class EnumConstantComparator implements Comparator {
 			throw new IllegalArgumentException(MessageFormat.format(message, new Object[]{EnumConstantDeclaration.class.getName()}));
 		}
 
-		final IField f1 = (IField) this.map.get(o1);
-		final IField f2 = (IField) this.map.get(o2);
+		final IField f1 = (IField) this.newEnumConstantToOldConstantFieldMap.get(o1);
+		final IField f2 = (IField) this.newEnumConstantToOldConstantFieldMap.get(o2);
 
 		Object v1 = null;
 		Object v2 = null;

@@ -4,9 +4,12 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -96,9 +99,9 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		}
 	}
 
-	private static void commenceSearch(SearchEngine engine,
+	private void commenceSearch(SearchEngine engine,
 			SearchPattern pattern, IJavaSearchScope scope,
-			final Map matchCollection, final SearchMatchPurpose purpose,
+			final SearchMatchPurpose purpose,
 			IProgressMonitor monitor) throws CoreException {
 		engine.search(pattern, new SearchParticipant[] { SearchEngine
 				.getDefaultSearchParticipant() }, scope, new SearchRequestor() {
@@ -107,7 +110,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 					throws CoreException {
 				if (match.getAccuracy() == SearchMatch.A_ACCURATE
 						&& !match.isInsideDocComment())
-					matchCollection.put(match, purpose);
+					matchToPurposeMap.put(match, purpose);
 			}
 		}, new SubProgressMonitor(monitor, 1,
 						SubProgressMonitor.SUPPRESS_SUBTASK_LABEL));
@@ -146,14 +149,15 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	private EnumerizationComputer computer;
 
 	/**
-	 * The fields to refactor.
+	 * The input fields to attempt to refactor.
 	 */
-	private Collection fieldsToRefactor = new LinkedHashSet();
+	private List fieldsToRefactor = new LinkedList();
 
 	/**
-	 * The set of declarations that need to be transformed.
+	 * A map from search matches to the reason they were searched for. 
+	 * The key set is the declarations that need to be transformed.
 	 */
-	private final Map matchCollection = new LinkedHashMap();
+	private final Map matchToPurposeMap = new LinkedHashMap();
 
 	private final Map packageNames = new LinkedHashMap();
 
@@ -161,7 +165,9 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 	private final Map simpleTypeNames = new LinkedHashMap();
 
-	private String simpleTypeName = "NewEnumType"; //$NON-NLS-1$
+	private String simpleTypeName; //$NON-NLS-1$
+	
+	private String packageName;
 
 	/**
 	 * Default ctor.
@@ -169,8 +175,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	public ConvertConstantsToEnumRefactoring() {
 	}
 
-	public ConvertConstantsToEnumRefactoring(Collection fieldsToRefactor) {
-		this.fieldsToRefactor = fieldsToRefactor;
+	public ConvertConstantsToEnumRefactoring(List fieldsToRefactor) {
+		this.fieldsToRefactor = new LinkedList(fieldsToRefactor);
 	}
 
 	public RefactoringStatus checkFinalConditions(final IProgressMonitor monitor)
@@ -220,7 +226,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 			// Get names for the new types.
 			this.retrieveTypeNames();
-
+			
 			for (final Iterator fit = this.computer.getEnumerizationForest()
 					.iterator(); fit.hasNext();) {
 				final Collection col = (Collection) fit.next();
@@ -239,7 +245,6 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 					// Search for declarations (must always do this since each
 					// element's type must be altered).
 					commenceSearch(engine, pattern, scope,
-							this.matchCollection,
 							SearchMatchPurpose.ALTER_TYPE_DECLARATION, monitor);
 
 					// if the current element is a that of an original input
@@ -253,7 +258,6 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 								SearchPattern.R_EXACT_MATCH);
 
 						commenceSearch(engine, pattern, scope,
-								this.matchCollection,
 								SearchMatchPurpose.ALTER_NAMESPACE_PREFIX,
 								monitor);
 					}
@@ -268,7 +272,6 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 								SearchPattern.R_EXACT_MATCH);
 
 						commenceSearch(engine, pattern, scope,
-								this.matchCollection,
 								SearchMatchPurpose.ALTER_INFIX_EXPRESSION,
 								monitor);
 					}
@@ -278,7 +281,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			// The compilation units needing to be altered mapped to the
 			// appropriate search matches.
 			final Map units = new HashMap();
-			for (final Iterator it = this.matchCollection.keySet().iterator(); it
+			for (final Iterator it = this.matchToPurposeMap.keySet().iterator(); it
 					.hasNext();) {
 				final SearchMatch match = (SearchMatch) it.next();
 				final IJavaElement element = (IJavaElement) match.getElement();
@@ -366,7 +369,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 								.createFatalErrorStatus(Messages.ConvertConstantsToEnumRefactoring_FieldsHaveNotBeenSpecified));
 
 			else {
-				for (final Iterator it = this.fieldsToRefactor.iterator(); it
+				for (final Iterator it = this.fieldsToRefactor.listIterator(); it
 						.hasNext();) {
 					final IField field = (IField) it.next();
 					if (!field.exists()) {
@@ -462,7 +465,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	 * @param fieldsToRefactor
 	 *            the fieldsToRefactor to set
 	 */
-	public void setFieldsToRefactor(Collection fieldsToRefactor) {
+	public void setFieldsToRefactor(List fieldsToRefactor) {
 		this.fieldsToRefactor = fieldsToRefactor;
 	}
 
@@ -564,9 +567,9 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			final Map annotationToQualifiedNameMap = new HashMap();
 
 			for (final Iterator cit = constants.iterator(); cit.hasNext();) {
-				final IField elem = (IField) cit.next();
+				final IField constantField = (IField) cit.next();
 				final FieldDeclaration originalFieldDeclaration = (FieldDeclaration) this.removedFieldNodes
-						.get(elem);
+						.get(constantField);
 
 				// Get annotations.
 				final Collection annotationCollection = new LinkedHashSet();
@@ -591,10 +594,10 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 						originalJavadoc);
 
 				final EnumConstantDeclaration constDecl = createNewEnumConstantDeclarataion(
-						ast, ast.newSimpleName(elem.getElementName()),
+						ast, ast.newSimpleName(constantField.getElementName()),
 						newJavadoc, annotationCollection);
 
-				newEnumConstantToOldConstantFieldMap.put(constDecl, elem);
+				newEnumConstantToOldConstantFieldMap.put(constDecl, constantField);
 				enumConstantDeclarationCollection.add(constDecl);
 			}
 
@@ -651,7 +654,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			 ******************************************************************/
 			/*******************************************************************
 			 * TODO: Need a way of inserting this new type such that it appears
-			 * in the text changes, for rollback purposes, etc.
+			 * in the text changes for rollback purposes, etc.
 			 ******************************************************************/
 			try {
 				page.createType(monitor);
@@ -733,21 +736,23 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 	private void retrievePackageNames() {
 		/** * TODO: Get real package names. ** */
-		int counter = 0;
+//		int counter = 0;
 		for (final Iterator it = this.computer.getEnumerizationForest()
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
-			this.packageNames.put(col, "some.package" + counter++); //$NON-NLS-1$
+//			this.packageNames.put(col, this.packageName + counter++); //$NON-NLS-1$
+			this.packageNames.put(col, this.packageName); //$NON-NLS-1$
 		}
 	}
 
 	private void retrieveSimpleTypeNames() {
 		/** * TODO: Get real type names. ** */
-		int counter = 0;
+//		int counter = 0;
 		for (final Iterator it = this.computer.getEnumerizationForest()
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
-			this.simpleTypeNames.put(col, simpleTypeName + counter++);
+//			this.simpleTypeNames.put(col, simpleTypeName + counter++);
+			this.simpleTypeNames.put(col, simpleTypeName);
 		}
 	}
 
@@ -999,15 +1004,23 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			final SearchMatch match = (SearchMatch) it.next();
 			if (match.getAccuracy() == SearchMatch.A_ACCURATE
 					&& !match.isInsideDocComment())
-				if (this.matchCollection.get(match) == SearchMatchPurpose.ALTER_TYPE_DECLARATION
-						|| this.matchCollection.get(match) == SearchMatchPurpose.ALTER_NAMESPACE_PREFIX)
+				if (this.matchToPurposeMap.get(match) == SearchMatchPurpose.ALTER_TYPE_DECLARATION
+						|| this.matchToPurposeMap.get(match) == SearchMatchPurpose.ALTER_NAMESPACE_PREFIX)
 					this.rewriteDeclarationsAndNamespaces(node, match, status,
 							astRewrite, importRewrite);
-				else if (this.matchCollection.get(match) == SearchMatchPurpose.ALTER_INFIX_EXPRESSION)
+				else if (this.matchToPurposeMap.get(match) == SearchMatchPurpose.ALTER_INFIX_EXPRESSION)
 					this.rewriteExpressions(node, match, status, astRewrite,
 							importRewrite);
 		}
 
 		this.rewriteAST(unit, astRewrite, importRewrite);
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
+
+	public String getPackageName() {
+		return packageName;
 	}
 }

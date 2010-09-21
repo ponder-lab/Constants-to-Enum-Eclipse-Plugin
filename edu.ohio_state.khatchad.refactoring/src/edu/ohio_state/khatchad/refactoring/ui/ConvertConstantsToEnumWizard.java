@@ -12,6 +12,7 @@ package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.JavaModelException;
@@ -49,7 +50,7 @@ public class ConvertConstantsToEnumWizard extends RefactoringWizard {
 	
 	public static void startConvertConstantsToEnumRefactoring(
 			final IField[] fields, final Shell shell) throws JavaModelException {
-		Collection fieldsToRefactor = Arrays.asList(fields);
+		List fieldsToRefactor = Arrays.asList(fields);
 		ConvertConstantsToEnumRefactoring convertConstantsToEnumRefactoring = new ConvertConstantsToEnumRefactoring(
 				fieldsToRefactor);
 		ConvertConstantsToEnumWizard wizard = new ConvertConstantsToEnumWizard(
