@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="edu.ohio_state.cse.khatchad.refactoring.feature"
+      label="Convert Constants to Enum Refactoring Feature"
+      version="0.1"
+      provider-name="Ohio State University">
+
+   <description url="http://code.google.com/p/constants-to-enum-eclipse-plugin">
+      The plugin refactors Java legacy code to make use of the new
+enum program construct which was introduced in Java 1.5. This
+construct, which provides language support for enumerated types,
+is one of many new features of Java that offer significant improvements
+over older Java technology. Prior to Java 1.5, programmers were
+required to employ various design patterns (e.g., static final
+int ...) to compensate for the absence of enumerated types in
+Java. Unfortunately, these compensation patterns lack several
+highly-desirable properties of the enum construct, most notably,
+type safety.
+The Convert Constants to Enum refactoring for Eclipse provides
+an automated approach for transforming legacy Java code to use
+the new enumeration construct. This semantics-preserving tool
+increases type safety, produces code that is easier to comprehend,
+removes unnecessary complexity, and eliminates brittleness problems
+that normally prevent separate compilation.
+   </description>
+
+   <copyright url="http://code.google.com/p/constants-to-enum-eclipse-plugin/">
+      Copyright 2010 Raffi Khatchadourian. All rights reserved.
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <url>
+      <update label="Convert Constants to Enum Update Site" url="http://constants-to-enum-eclipse-plugin.googlecode.com/svn/trunk/edu.ohio_state.cse.khatchad.refactoring.updatesite"/>
+   </url>
+
+   <plugin
+         id="edu.ohio_state.khatchad.refactoring"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
