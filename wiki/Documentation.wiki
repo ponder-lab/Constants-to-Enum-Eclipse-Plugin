@@ -1,4 +1,0 @@
-#summary Documentation on how to use the Convert Constants to Enum refactoring tool.
-#labels Featured,Phase-Implementation
-
-Coming soon, but, in short, install the plugin via the update site, select a set of constants explicitly through the package explorer or outline view, and select the "Convert Constants to Enum" option from the context menu. A wizard will then display with further instructions and customizations. In future versions, we hope to have the command available at multiple levels (e.g., projects) and from the editor and drop down menu.
