@@ -1,4 +1,5 @@
-# constants-to-enum-eclipse-plugin
+# Constants to Enum Eclipse Plugin
+
 ![https://raw.githubusercontent.com/khatchad/constants-to-enum-eclipse-plugin/master/edu.ohio_state.khatchad.refactoring/icons/full/wizban/constantstoenum_wiz.png](https://raw.githubusercontent.com/khatchad/constants-to-enum-eclipse-plugin/master/edu.ohio_state.khatchad.refactoring/icons/full/wizban/constantstoenum_wiz.png) A research prototype Eclipse plugin that refactors Java legacy code to make use of the new enum program construct that was introduced in Java 5.
 
 The Convert Constants to Enum refactoring for Eclipse provides an automated approach for transforming legacy Java code to use the new enumeration construct. This semantics-preserving tool increases type safety, produces code that is easier to comprehend, removes unnecessary complexity, and eliminates brittleness problems that normally prevent separate compilation.
