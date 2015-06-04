@@ -9,7 +9,7 @@ The plugin refactors Java legacy code to make use of the new enum program constr
 
 ## Update Site #
 
-http://constants-to-enum-eclipse-plugin.googlecode.com/svn/edu.ohio_state.cse.khatchad.refactoring.updatesite
+https://raw.githubusercontent.com/khatchad/constants-to-enum-eclipse-plugin/master/edu.ohio_state.cse.khatchad.refactoring.updatesite
 
 ## News #
 There are several features currently lacking in the plugin which are obstacles to wide distribution including a robust graphical user interface, a full test suite with regression tests, and complete undo functionality.
