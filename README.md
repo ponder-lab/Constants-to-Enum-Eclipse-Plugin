@@ -25,3 +25,17 @@ Go to the Outline View (Window -> Show View -> Outline), then in the Outline Vie
 ## Getting help #
 
 Please feel free to post to the [General Development Discussion](http://groups.google.com/group/convert-constants-to-enum-dev) list with any comments, questions, or concerns.
+
+## External links
+[Original Eclipse bugzilla page](http://bugs.eclipse.org/bugs/show_bug.cgi?id=200152)
+[Original author's website](http://openlab.citytech.cuny.edu/khatchad)
+[ICSM '07 conference paper](http://www.cse.ohio-state.edu/~rountev/presto/pubs/icsm07.pdf)
+[Full technical report](http://www.cse.ohio-state.edu/~rountev/presto/pubs/tr26.pdf)
+[Article on Eclipse refactoring](http://www.eclipse.org/articles/article.php?file=Article-Unleashing-the-Power-of-Refactoring/index.html)
+[API for refactoring wizards](http://tinyurl.com/298vzvr)
+[Update site](https://raw.githubusercontent.com/khatchad/constants-to-enum-eclipse-plugin/master/edu.ohio_state.cse.khatchad.refactoring.updatesite)
+
+## Groups
+[Development discussion](http://groups.google.com/group/convert-constants-to-enum-dev)
+[Issue updates](http://groups.google.com/group/convert-constants-to-enum-issues)
+[Commits](http://groups.google.com/group/convert-constants-to-enum-commits)
