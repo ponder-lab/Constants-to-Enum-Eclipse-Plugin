@@ -7,7 +7,7 @@ package edu.ohio_state.khatchad.refactoring.core;
  * @author raffi
  * 
  */
-public class InternalStateStatus extends Status {
+public class InternalStateStatus extends CoreStatus {
 
 	/**
 	 * @param severity
