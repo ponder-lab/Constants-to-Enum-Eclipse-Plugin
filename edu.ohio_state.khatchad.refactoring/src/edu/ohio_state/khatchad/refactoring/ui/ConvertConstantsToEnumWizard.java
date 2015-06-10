@@ -11,7 +11,6 @@
 package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.jdt.core.IField;

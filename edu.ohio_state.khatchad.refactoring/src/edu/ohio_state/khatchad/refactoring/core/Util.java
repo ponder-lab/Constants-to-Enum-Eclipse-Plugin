@@ -87,7 +87,7 @@ public class Util {
 
 	public static CompilationUnit getCompilationUnit(ICompilationUnit icu,
 			IProgressMonitor monitor) {
-		final ASTParser parser = ASTParser.newParser(AST.JLS3);
+		final ASTParser parser = ASTParser.newParser(AST.JLS8);
 		parser.setSource(icu);
 		parser.setResolveBindings(true);
 		final CompilationUnit ret = (CompilationUnit) parser.createAST(monitor);

@@ -4,7 +4,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -69,7 +68,7 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.corext.dom.NodeFinder;
+import org.eclipse.jdt.core.dom.NodeFinder;
 import org.eclipse.jdt.ui.wizards.NewEnumWizardPage;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.ChangeDescriptor;
@@ -165,7 +164,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 	private final Map simpleTypeNames = new LinkedHashMap();
 
-	private String simpleTypeName; //$NON-NLS-1$
+	private String simpleTypeName;
 	
 	private String packageName;
 
@@ -336,7 +335,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 				for (final Iterator it = set.iterator(); it.hasNext();) {
 					final IJavaProject project = (IJavaProject) it.next();
-					final ASTParser parser = ASTParser.newParser(AST.JLS3);
+					final ASTParser parser = ASTParser.newParser(AST.JLS8);
 					parser.setProject(project);
 					parser.setResolveBindings(true);
 					final Collection collection = (Collection) projects
@@ -549,7 +548,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	private RefactoringStatus insertNewEnumType(IProgressMonitor monitor)
 			throws CoreException {
 		final RefactoringStatus status = new RefactoringStatus();
-		final AST ast = AST.newAST(AST.JLS3);
+		final AST ast = AST.newAST(AST.JLS8);
 		for (final Iterator it = this.computer.getEnumerizationForest()
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
@@ -741,7 +740,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
 //			this.packageNames.put(col, this.packageName + counter++); //$NON-NLS-1$
-			this.packageNames.put(col, this.packageName); //$NON-NLS-1$
+			this.packageNames.put(col, this.packageName);
 		}
 	}
 
