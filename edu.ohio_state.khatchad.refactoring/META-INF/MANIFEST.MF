@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: edu.ohio_state.khatchad.refactoring;singleton:=true
 Bundle-Version: 1.0.1
-Bundle-Activator: edu.ohio_state.khatchad.refactoring.RefactoringPlugin
+Bundle-Activator: edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoringPlugin
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: bundle
 Require-Bundle: org.eclipse.ui,

@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import edu.ohio_state.khatchad.refactoring.RefactoringPlugin;
+import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoringPlugin;
 
 // TODO [bm] most stuff copied from JavaPluginImages
 //           should be merged back later
@@ -36,7 +36,7 @@ public class RefactoringPluginImages {
 	 */
 	private static ImageDescriptor createUnManaged(String prefix, String name) {
 		IPath path= ICONS_PATH.append(prefix).append(name);
-		URL url= FileLocator.find(RefactoringPlugin.getDefault().getBundle(), path, null);
+		URL url= FileLocator.find(ConvertConstantsToEnumRefactoringPlugin.getDefault().getBundle(), path, null);
 		if (url != null) {
 			return ImageDescriptor.createFromURL(url);
 		}

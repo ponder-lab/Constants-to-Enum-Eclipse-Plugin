@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import edu.ohio_state.khatchad.refactoring.RefactoringPlugin;
+import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoringPlugin;
 
 
 public class ConvertConstantsToEnumHandler extends AbstractHandler {
@@ -42,7 +43,7 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 			IField[] fields = (IField[]) selectedFields.toArray(new IField[] {});
 			ConvertConstantsToEnumWizard.startConvertConstantsToEnumRefactoring(fields, shell);
 		} catch (final JavaModelException exception) {
-			RefactoringPlugin.log(exception);
+			RefactoringPlugin.getDefault().log(exception);
 		}
 
 		return null;
