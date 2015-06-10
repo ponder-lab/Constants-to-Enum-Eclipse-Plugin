@@ -27,7 +27,7 @@ Go to the Outline View (Window -> Show View -> Outline), then in the Outline Vie
 
 Please feel free to post to the [General Development Discussion](http://groups.google.com/group/convert-constants-to-enum-dev) list with any comments, questions, or concerns.
 
-# Development
+## Development
 
 Note that this plugin depends on https://github.com/khatchad/edu.cuny.citytech.refactoring.common.
 
