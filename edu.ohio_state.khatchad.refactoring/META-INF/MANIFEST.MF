@@ -15,9 +15,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Export-Package: edu.ohio_state.khatchad.refactoring,
  edu.ohio_state.khatchad.refactoring.core,
  edu.ohio_state.khatchad.refactoring.exceptions,
  edu.ohio_state.khatchad.refactoring.ui,
  edu.ohio_state.khatchad.refactoring.visitor
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
