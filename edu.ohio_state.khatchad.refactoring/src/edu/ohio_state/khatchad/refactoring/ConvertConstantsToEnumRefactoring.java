@@ -1019,8 +1019,4 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	public String getName() {
 		return Messages.ConvertConstantsToEnum_Name;
 	}
-
-	public RefactoringStatus initialize(Map arguments) {
-		return new RefactoringStatus();
-	}
 }
