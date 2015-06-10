@@ -82,7 +82,6 @@ import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEdit;
 
 import edu.cuny.citytech.refactoring.common.Refactoring;
-import edu.cuny.citytech.refactoring.common.RefactoringPlugin;
 import edu.ohio_state.khatchad.refactoring.core.EnumConstantComparator;
 import edu.ohio_state.khatchad.refactoring.core.EnumerizationComputer;
 import edu.ohio_state.khatchad.refactoring.core.InternalStateStatus;
@@ -513,11 +512,11 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 			this.changes.put(unit, change);
 		} catch (final MalformedTreeException exception) {
-			RefactoringPlugin.getDefault().log(exception);
+			ConvertConstantsToEnumRefactoringPlugin.getDefault().log(exception);
 		} catch (final IllegalArgumentException exception) {
-			RefactoringPlugin.getDefault().log(exception);
+			ConvertConstantsToEnumRefactoringPlugin.getDefault().log(exception);
 		} catch (final CoreException exception) {
-			RefactoringPlugin.getDefault().log(exception);
+			ConvertConstantsToEnumRefactoringPlugin.getDefault().log(exception);
 		}
 	}
 
@@ -886,7 +885,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 												(Collection) units.get(source), ast,
 												status, monitor);
 							} catch (CoreException exception) {
-								RefactoringPlugin.getDefault().log(exception);
+						ConvertConstantsToEnumRefactoringPlugin.getDefault()
+								.log(exception);
 							}
 						}
 					};
