@@ -24,8 +24,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import edu.cuny.citytech.refactoring.common.RefactoringPlugin;
-
+import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoringPlugin;
 
 public class ConvertConstantsToEnumHandler extends AbstractHandler {
 
@@ -39,10 +38,12 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 		List selectedFields = getSelectedFields(currentSelection);
 		try {
 			Shell shell = HandlerUtil.getActiveShellChecked(event);
-			IField[] fields = (IField[]) selectedFields.toArray(new IField[] {});
-			ConvertConstantsToEnumWizard.startConvertConstantsToEnumRefactoring(fields, shell);
+			IField[] fields = (IField[]) selectedFields
+					.toArray(new IField[] {});
+			ConvertConstantsToEnumWizard
+					.startConvertConstantsToEnumRefactoring(fields, shell);
 		} catch (final JavaModelException exception) {
-			RefactoringPlugin.getDefault().log(exception);
+			ConvertConstantsToEnumRefactoringPlugin.getDefault().log(exception);
 		}
 
 		return null;
