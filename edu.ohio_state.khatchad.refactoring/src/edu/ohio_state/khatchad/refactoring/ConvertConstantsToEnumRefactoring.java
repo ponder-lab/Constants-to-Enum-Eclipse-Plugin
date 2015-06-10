@@ -48,6 +48,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.NodeFinder;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.SimpleName;
@@ -68,12 +69,10 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.core.dom.NodeFinder;
 import org.eclipse.jdt.ui.wizards.NewEnumWizardPage;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.ChangeDescriptor;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
-import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringChangeDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
@@ -82,12 +81,14 @@ import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEdit;
 
+import edu.cuny.citytech.refactoring.common.Refactoring;
+import edu.cuny.citytech.refactoring.common.RefactoringPlugin;
 import edu.ohio_state.khatchad.refactoring.core.EnumConstantComparator;
 import edu.ohio_state.khatchad.refactoring.core.EnumerizationComputer;
 import edu.ohio_state.khatchad.refactoring.core.InternalStateStatus;
 import edu.ohio_state.khatchad.refactoring.core.Util;
 
-public class ConvertConstantsToEnumRefactoring extends edu.ohio_state.khatchad.refactoring.Refactoring {
+public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 	static class SearchMatchPurpose {
 		public static final SearchMatchPurpose ALTER_INFIX_EXPRESSION = new SearchMatchPurpose();

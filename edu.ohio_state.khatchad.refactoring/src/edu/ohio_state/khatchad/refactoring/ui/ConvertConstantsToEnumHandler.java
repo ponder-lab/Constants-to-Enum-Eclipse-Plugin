@@ -24,8 +24,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import edu.ohio_state.khatchad.refactoring.RefactoringPlugin;
-import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoringPlugin;
+import edu.cuny.citytech.refactoring.common.RefactoringPlugin;
 
 
 public class ConvertConstantsToEnumHandler extends AbstractHandler {

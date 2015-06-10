@@ -1,5 +1,7 @@
 package edu.ohio_state.khatchad.refactoring;
 
+import edu.cuny.citytech.refactoring.common.RefactoringPlugin;
+
 
 public class ConvertConstantsToEnumRefactoringPlugin extends RefactoringPlugin {
 
@@ -8,7 +10,7 @@ public class ConvertConstantsToEnumRefactoringPlugin extends RefactoringPlugin {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.ohio_state.khatchad.refactoring.RefactoringPlugin#getRefactoringId()
+	 * @see edu.cuny.citytech.refactoring.common.RefactoringPlugin#getRefactoringId()
 	 */
 	protected String getRefactoringId() {
 		return ConvertConstantsToEnumDescriptor.REFACTORING_ID;

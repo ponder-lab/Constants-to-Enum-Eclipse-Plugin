@@ -2,8 +2,10 @@ package edu.ohio_state.khatchad.refactoring;
 
 import java.util.Map;
 
+import edu.cuny.citytech.refactoring.common.RefactoringContribution;
+
 public class ConvertConstantsToEnumRefactoringContribution extends
-		edu.ohio_state.khatchad.refactoring.RefactoringContribution {
+		RefactoringContribution {
 
 	public org.eclipse.ltk.core.refactoring.RefactoringDescriptor createDescriptor(
 			String id, String project, String description, String comment,
