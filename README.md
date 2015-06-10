@@ -27,6 +27,10 @@ Go to the Outline View (Window -> Show View -> Outline), then in the Outline Vie
 
 Please feel free to post to the [General Development Discussion](http://groups.google.com/group/convert-constants-to-enum-dev) list with any comments, questions, or concerns.
 
+# Development
+
+Note that this plugin depends on https://github.com/khatchad/edu.cuny.citytech.refactoring.common.
+
 ## External links
 - [Original Eclipse bugzilla page](http://bugs.eclipse.org/bugs/show_bug.cgi?id=200152)
 - [Original author's website](http://openlab.citytech.cuny.edu/khatchad)
