@@ -98,9 +98,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		}
 	}
 
-	void commenceSearch(SearchEngine engine,
-			SearchPattern pattern, IJavaSearchScope scope,
-			final SearchMatchPurpose purpose,
+	void commenceSearch(SearchEngine engine, SearchPattern pattern,
+			IJavaSearchScope scope, final SearchMatchPurpose purpose,
 			IProgressMonitor monitor) throws CoreException {
 		engine.search(pattern, new SearchParticipant[] { SearchEngine
 				.getDefaultSearchParticipant() }, scope, new SearchRequestor() {
@@ -112,7 +111,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 					matchToPurposeMap.put(match, purpose);
 			}
 		}, new SubProgressMonitor(monitor, 1,
-						SubProgressMonitor.SUPPRESS_SUBTASK_LABEL));
+				SubProgressMonitor.SUPPRESS_SUBTASK_LABEL));
 	}
 
 	private static EnumConstantDeclaration createNewEnumConstantDeclarataion(
@@ -151,8 +150,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	List fieldsToRefactor = new LinkedList();
 
 	/**
-	 * A map from search matches to the reason they were searched for. 
-	 * The key set is the declarations that need to be transformed.
+	 * A map from search matches to the reason they were searched for. The key
+	 * set is the declarations that need to be transformed.
 	 */
 	final Map matchToPurposeMap = new LinkedHashMap();
 
@@ -163,7 +162,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	private final Map simpleTypeNames = new LinkedHashMap();
 
 	private String simpleTypeName;
-	
+
 	private String packageName;
 
 	protected final Map changes = new LinkedHashMap();
@@ -314,7 +313,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 						ast, ast.newSimpleName(constantField.getElementName()),
 						newJavadoc, annotationCollection);
 
-				newEnumConstantToOldConstantFieldMap.put(constDecl, constantField);
+				newEnumConstantToOldConstantFieldMap.put(constDecl,
+						constantField);
 				enumConstantDeclarationCollection.add(constDecl);
 			}
 
@@ -327,8 +327,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			 * allowed, but may need more checking here for private!.
 			 ******************************************************************/
 			if (!(Flags.isPublic(flag) || Flags.isPackageDefault(flag)))
-				status
-						.addFatalError(Messages.ConvertConstantsToEnumRefactoring_EnumTypeMustHaveCorrectVisibility);
+				status.addFatalError(Messages.ConvertConstantsToEnumRefactoring_EnumTypeMustHaveCorrectVisibility);
 
 			EnumDeclaration newEnumDeclaration = null;
 			// only add modifier if it is not package default.
@@ -337,21 +336,23 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 						.newModifier(Modifier.ModifierKeyword
 								.fromFlagValue(flag));
 
-				newEnumDeclaration = createNewEnumDeclaration(ast, ast
-						.newSimpleName((String) this.simpleTypeNames.get(col)),
-						enumConstantDeclarationCollection,
+				newEnumDeclaration = createNewEnumDeclaration(ast,
+						ast.newSimpleName((String) this.simpleTypeNames
+								.get(col)), enumConstantDeclarationCollection,
 						new Object[] { newModifier });
 			} else
-				newEnumDeclaration = createNewEnumDeclaration(ast, ast
-						.newSimpleName((String) this.simpleTypeNames.get(col)),
-						enumConstantDeclarationCollection, new Object[] {});
+				newEnumDeclaration = createNewEnumDeclaration(ast,
+						ast.newSimpleName((String) this.simpleTypeNames
+								.get(col)), enumConstantDeclarationCollection,
+						new Object[] {});
 
-			// TODO [bm] pretty dirty hack to workaround 16: Refactoring should not use UI components for code changes
-			//			 http://code.google.com/p/constants-to-enum-eclipse-plugin/issues/detail?id=16
+			// TODO [bm] pretty dirty hack to workaround 16: Refactoring should
+			// not use UI components for code changes
+			// http://code.google.com/p/constants-to-enum-eclipse-plugin/issues/detail?id=16
 			final NewEnumWizardPage[] result = new NewEnumWizardPage[1];
 			Display.getDefault().syncExec(new Runnable() {
 				public void run() {
-					result[0]= new NewEnumWizardPage();
+					result[0] = new NewEnumWizardPage();
 				}
 			});
 			NewEnumWizardPage page = result[0];
@@ -421,7 +422,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		return status;
 	}
 
-	private boolean isEmptyEdit(TextEdit edit) {
+	private static boolean isEmptyEdit(TextEdit edit) {
 		return edit.getClass() == MultiTextEdit.class && !edit.hasChildren();
 	}
 
@@ -445,7 +446,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			final IField field = (IField) it.next();
 			if (!enumerizableElements.contains(field)) {
 				String message = Messages.ConvertConstantsToEnumRefactoring_RefactoringNotPossible;
-				ret.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
+				ret.addWarning(MessageFormat.format(message,
+						new Object[] { field.getElementName() }));
 			}
 		}
 		return ret;
@@ -453,22 +455,22 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 	private void retrievePackageNames() {
 		/** * TODO: Get real package names. ** */
-//		int counter = 0;
+		// int counter = 0;
 		for (final Iterator it = this.computer.getEnumerizationForest()
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
-//			this.packageNames.put(col, this.packageName + counter++); //$NON-NLS-1$
+			//			this.packageNames.put(col, this.packageName + counter++); //$NON-NLS-1$
 			this.packageNames.put(col, this.packageName);
 		}
 	}
 
 	private void retrieveSimpleTypeNames() {
 		/** * TODO: Get real type names. ** */
-//		int counter = 0;
+		// int counter = 0;
 		for (final Iterator it = this.computer.getEnumerizationForest()
 				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
-//			this.simpleTypeNames.put(col, simpleTypeName + counter++);
+			// this.simpleTypeNames.put(col, simpleTypeName + counter++);
 			this.simpleTypeNames.put(col, simpleTypeName);
 		}
 	}
@@ -492,19 +494,19 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			final MultiTextEdit edit = new MultiTextEdit();
 			final TextEdit astEdit = astRewrite.rewriteAST();
 
-			if (!this.isEmptyEdit(astEdit))
+			if (!isEmptyEdit(astEdit))
 				edit.addChild(astEdit);
 			final TextEdit importEdit = importRewrite
 					.rewriteImports(new NullProgressMonitor());
-			if (!this.isEmptyEdit(importEdit))
+			if (!isEmptyEdit(importEdit))
 				edit.addChild(importEdit);
-			if (this.isEmptyEdit(edit))
+			if (isEmptyEdit(edit))
 				return;
 
 			TextFileChange change = (TextFileChange) this.changes.get(unit);
 			if (change == null) {
-				change = new TextFileChange(unit.getElementName(), (IFile) unit
-						.getResource());
+				change = new TextFileChange(unit.getElementName(),
+						(IFile) unit.getResource());
 				change.setTextType("java"); //$NON-NLS-1$
 				change.setEdit(edit);
 			} else
@@ -530,9 +532,9 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		// Must be simple name node.
 		if (result.getNodeType() != ASTNode.SIMPLE_NAME) {
 			final String errorMessage = Messages.ConvertConstantsToEnumRefactoring_WrongType;
-			status
-					.merge(RefactoringStatus
-							.createFatalErrorStatus(MessageFormat.format(errorMessage,new Object[] {node, node.getClass()})));
+			status.merge(RefactoringStatus.createFatalErrorStatus(MessageFormat
+					.format(errorMessage,
+							new Object[] { node, node.getClass() })));
 			final IStatus stateStatus = new InternalStateStatus(IStatus.ERROR,
 					errorMessage);
 			throw new CoreException(stateStatus);
@@ -544,8 +546,9 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 		if (match instanceof FieldDeclarationMatch
 				&& this.fieldsToRefactor.contains(match.getElement()))
-			status.merge(this.removeConstField(astRewrite, importRewrite, Util
-					.getFieldDeclaration(result), (IField) match.getElement()));
+			status.merge(this.removeConstField(astRewrite, importRewrite,
+					Util.getFieldDeclaration(result),
+					(IField) match.getElement()));
 
 		else if (match instanceof FieldDeclarationMatch)
 			status.merge(this.rewriteFieldDeclaration(astRewrite,
@@ -557,13 +560,13 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 			if (((IVariableBinding) ((Name) result).resolveBinding())
 					.isParameter())
 				status.merge(this.rewriteFormalParameterDeclaration(astRewrite,
-						importRewrite, Util
-								.getSingleVariableDeclaration(result), fqn));
+						importRewrite,
+						Util.getSingleVariableDeclaration(result), fqn));
 
 			else
 				status.merge(this.rewriteLocalVariableDeclaration(astRewrite,
-						importRewrite, Util
-								.getVariableDeclarationStatement(result), fqn));
+						importRewrite,
+						Util.getVariableDeclarationStatement(result), fqn));
 
 		else if (match instanceof MethodDeclarationMatch)
 			status.merge(this.rewriteMethodDeclaration(astRewrite,
@@ -624,8 +627,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		final RefactoringStatus status = new RefactoringStatus();
 		final AST ast = ie.getAST();
 
-		final Expression leftExpCopy = (Expression) ASTNode.copySubtree(ast, ie
-				.getLeftOperand());
+		final Expression leftExpCopy = (Expression) ASTNode.copySubtree(ast,
+				ie.getLeftOperand());
 		final Expression rightExpCopy = (Expression) ASTNode.copySubtree(ast,
 				ie.getRightOperand());
 
@@ -704,8 +707,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		final SimpleName nameCopy = (SimpleName) ASTNode.copySubtree(ast, name);
 
 		final String typeName = importRewrite.addImport(fullyQualifiedTypeName);
-		final QualifiedName newNameNode = ast.newQualifiedName(ast
-				.newName(typeName), nameCopy);
+		final QualifiedName newNameNode = ast.newQualifiedName(
+				ast.newName(typeName), nameCopy);
 
 		astRewrite.replace(nodeToReplace, newNameNode, null);
 		return status;
@@ -741,280 +744,294 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		return packageName;
 	}
 
-	public RefactoringStatus checkFinalConditions(final IProgressMonitor monitor) throws CoreException,
-			OperationCanceledException {
-				final RefactoringStatus status = new RefactoringStatus();
-				try {
-					monitor.beginTask(Messages.ConvertConstantsToEnumRefactoring_CheckingPreconditions, 2);
-			
-					final IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
-					this.computer = new EnumerizationComputer(this.fieldsToRefactor,
-							scope, monitor);
-			
-					// build the enumerization forest.
-					/*
-					 * TODO: Will treat this as a 'blackbox' for now. For more details
-					 * on the internals of this method, check the paper available at:
-					 * http://www.cse.ohio-state.edu/~khatchad/papers/khatchad-TR26.pdf
-					 * or a shorter version at
-					 * http://presto.cse.ohio-state.edu/pubs/icsm07.pdf.
-					 */
-					this.computer.compute();
-			
-					/*
-					 * TODO: The enumerization forest build by the enum computer
-					 * consists of only the *minimal* sets which can be transformed into
-					 * an enum type. That is, elements are grouped together in each set
-					 * based *only* upon their type dependencies. Therefore, it is
-					 * possible to, if desired, to further union these sets to build
-					 * large (in terms of members) types. In the initial test case, the
-					 * field DECREASE_SPEED is an example of this problem. Since
-					 * DECREASE_SPEED does not currently share type dependencies with
-					 * any of the other automobile actions, the computer places it in a
-					 * singleton set. However, it is clear that DECREASE_SPEED should
-					 * belong to the set consisting of the other automobile actions. As
-					 * such, we may want a sophisticated UI that presents the input
-					 * constants in sets produced by the enumerization computer, then
-					 * allow the user to further union the sets as desired. After the
-					 * user has manipulated the sets, we would only need to run the new
-					 * "forest" through the member constraint filter which is a public
-					 * static method of the EnumerizationComputer.
-					 */
-			
-					// check to see if any of the input constants weren't enumerizable.
-					final RefactoringStatus nonEnumStatus = this
-							.reportNonEnumerizableInputConstants();
-					status.merge(nonEnumStatus);
-			
-					// Get names for the new types.
-					this.retrieveTypeNames();
-					
-					for (final Iterator fit = this.computer.getEnumerizationForest()
-							.iterator(); fit.hasNext();) {
-						final Collection col = (Collection) fit.next();
-						for (final Iterator cit = col.iterator(); cit.hasNext();) {
-							final IJavaElement elem = (IJavaElement) cit.next();
-			
-							// The search engine.
-							final SearchEngine engine = new SearchEngine();
-			
-							// The search pattern corresponding to the entities whose
-							// type must be altered.
-							SearchPattern pattern = SearchPattern.createPattern(elem,
-									IJavaSearchConstants.DECLARATIONS,
-									SearchPattern.R_EXACT_MATCH);
-			
-							// Search for declarations (must always do this since each
-							// element's type must be altered).
-							commenceSearch(engine, pattern, scope,
-									SearchMatchPurpose.ALTER_TYPE_DECLARATION, monitor);
-			
-							// if the current element is a that of an original input
-							// constant ...
-							if (this.fieldsToRefactor.contains(elem)) {
-								// The search pattern corresponding to the references to
-								// the constant whose parent expression(s) must be
-								// altered (more like tweaked).
-								pattern = SearchPattern.createPattern(elem,
-										IJavaSearchConstants.REFERENCES,
-										SearchPattern.R_EXACT_MATCH);
-			
-								commenceSearch(engine, pattern, scope,
-										SearchMatchPurpose.ALTER_NAMESPACE_PREFIX,
-										monitor);
-							}
-			
-							// if the current element needs infix expression
-							// manipulation ...
-							if (this.computer
-									.getElemToLegalInfixExpressionSourceRangeMap()
-									.containsKey(elem)) {
-								pattern = SearchPattern.createPattern(elem,
-										IJavaSearchConstants.REFERENCES,
-										SearchPattern.R_EXACT_MATCH);
-			
-								commenceSearch(engine, pattern, scope,
-										SearchMatchPurpose.ALTER_INFIX_EXPRESSION,
-										monitor);
-							}
-						}
+	public RefactoringStatus checkFinalConditions(final IProgressMonitor monitor)
+			throws CoreException, OperationCanceledException {
+		final RefactoringStatus status = new RefactoringStatus();
+		try {
+			monitor.beginTask(
+					Messages.ConvertConstantsToEnumRefactoring_CheckingPreconditions,
+					2);
+
+			final IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
+			this.computer = new EnumerizationComputer(this.fieldsToRefactor,
+					scope, monitor);
+
+			// build the enumerization forest.
+			/*
+			 * TODO: Will treat this as a 'blackbox' for now. For more details
+			 * on the internals of this method, check the paper available at:
+			 * http://www.cse.ohio-state.edu/~khatchad/papers/khatchad-TR26.pdf
+			 * or a shorter version at
+			 * http://presto.cse.ohio-state.edu/pubs/icsm07.pdf.
+			 */
+			this.computer.compute();
+
+			/*
+			 * TODO: The enumerization forest build by the enum computer
+			 * consists of only the *minimal* sets which can be transformed into
+			 * an enum type. That is, elements are grouped together in each set
+			 * based *only* upon their type dependencies. Therefore, it is
+			 * possible to, if desired, to further union these sets to build
+			 * large (in terms of members) types. In the initial test case, the
+			 * field DECREASE_SPEED is an example of this problem. Since
+			 * DECREASE_SPEED does not currently share type dependencies with
+			 * any of the other automobile actions, the computer places it in a
+			 * singleton set. However, it is clear that DECREASE_SPEED should
+			 * belong to the set consisting of the other automobile actions. As
+			 * such, we may want a sophisticated UI that presents the input
+			 * constants in sets produced by the enumerization computer, then
+			 * allow the user to further union the sets as desired. After the
+			 * user has manipulated the sets, we would only need to run the new
+			 * "forest" through the member constraint filter which is a public
+			 * static method of the EnumerizationComputer.
+			 */
+
+			// check to see if any of the input constants weren't enumerizable.
+			final RefactoringStatus nonEnumStatus = this
+					.reportNonEnumerizableInputConstants();
+			status.merge(nonEnumStatus);
+
+			// Get names for the new types.
+			this.retrieveTypeNames();
+
+			for (final Iterator fit = this.computer.getEnumerizationForest()
+					.iterator(); fit.hasNext();) {
+				final Collection col = (Collection) fit.next();
+				for (final Iterator cit = col.iterator(); cit.hasNext();) {
+					final IJavaElement elem = (IJavaElement) cit.next();
+
+					// The search engine.
+					final SearchEngine engine = new SearchEngine();
+
+					// The search pattern corresponding to the entities whose
+					// type must be altered.
+					SearchPattern pattern = SearchPattern.createPattern(elem,
+							IJavaSearchConstants.DECLARATIONS,
+							SearchPattern.R_EXACT_MATCH);
+
+					// Search for declarations (must always do this since each
+					// element's type must be altered).
+					commenceSearch(engine, pattern, scope,
+							SearchMatchPurpose.ALTER_TYPE_DECLARATION, monitor);
+
+					// if the current element is a that of an original input
+					// constant ...
+					if (this.fieldsToRefactor.contains(elem)) {
+						// The search pattern corresponding to the references to
+						// the constant whose parent expression(s) must be
+						// altered (more like tweaked).
+						pattern = SearchPattern.createPattern(elem,
+								IJavaSearchConstants.REFERENCES,
+								SearchPattern.R_EXACT_MATCH);
+
+						commenceSearch(engine, pattern, scope,
+								SearchMatchPurpose.ALTER_NAMESPACE_PREFIX,
+								monitor);
 					}
-			
-					// The compilation units needing to be altered mapped to the
-					// appropriate search matches.
-					final Map units = new HashMap();
-					for (final Iterator it = this.matchToPurposeMap.keySet().iterator(); it
-							.hasNext();) {
-						final SearchMatch match = (SearchMatch) it.next();
-						final IJavaElement element = (IJavaElement) match.getElement();
-						final ICompilationUnit unit = Util.getIMember(element)
-								.getCompilationUnit();
-						if (unit != null) {
-							Collection searchMatchCollection = (Collection) units
-									.get(unit);
-							if (searchMatchCollection == null) {
-								searchMatchCollection = new ArrayList();
-								units.put(unit, searchMatchCollection);
-							}
-							searchMatchCollection.add(match);
-						}
+
+					// if the current element needs infix expression
+					// manipulation ...
+					if (this.computer
+							.getElemToLegalInfixExpressionSourceRangeMap()
+							.containsKey(elem)) {
+						pattern = SearchPattern.createPattern(elem,
+								IJavaSearchConstants.REFERENCES,
+								SearchPattern.R_EXACT_MATCH);
+
+						commenceSearch(engine, pattern, scope,
+								SearchMatchPurpose.ALTER_INFIX_EXPRESSION,
+								monitor);
 					}
-			
-					final Map projects = new HashMap();
-					for (final Iterator it = units.keySet().iterator(); it.hasNext();) {
-						final ICompilationUnit unit = (ICompilationUnit) it.next();
-						final IJavaProject project = unit.getJavaProject();
-						if (project != null) {
-							Collection unitsCollection = (Collection) projects
-									.get(project);
-							if (unitsCollection == null) {
-								unitsCollection = new ArrayList();
-								projects.put(project, unitsCollection);
-							}
-							unitsCollection.add(unit);
-						}
-					}
-			
-					final ASTRequestor requestor = new ASTRequestor() {
-			
-						public void acceptAST(ICompilationUnit source,
-								CompilationUnit ast) {
-							try {
-								ConvertConstantsToEnumRefactoring.this
-										.rewriteCompilationUnit(source,
-												(Collection) units.get(source), ast,
-												status, monitor);
-							} catch (CoreException exception) {
-						ConvertConstantsToEnumRefactoringPlugin.getDefault()
-								.log(exception);
-							}
-						}
-					};
-			
-					final IProgressMonitor subMonitor = new SubProgressMonitor(monitor,
-							1);
-					try {
-						final Set set = projects.keySet();
-						subMonitor.beginTask(Messages.ConvertConstantsToEnumRefactoring_CompilingSource, set.size());
-			
-						for (final Iterator it = set.iterator(); it.hasNext();) {
-							final IJavaProject project = (IJavaProject) it.next();
-							final ASTParser parser = ASTParser.newParser(AST.JLS8);
-							parser.setProject(project);
-							parser.setResolveBindings(true);
-							final Collection collection = (Collection) projects
-									.get(project);
-							parser.createASTs((ICompilationUnit[]) collection
-									.toArray(new ICompilationUnit[collection.size()]),
-									new String[0], requestor, new SubProgressMonitor(
-											subMonitor, 1));
-						}
-			
-					} finally {
-						subMonitor.done();
-					}
-				} finally {
-					monitor.done();
 				}
-			
-				status.merge(this.insertNewEnumType(monitor));
-				return status;
 			}
 
-	public RefactoringStatus checkInitialConditions(IProgressMonitor monitor) throws CoreException,
-			OperationCanceledException {
-				final RefactoringStatus status = new RefactoringStatus();
-				try {
-					monitor.beginTask(Messages.ConvertConstantsToEnumRefactoring_CheckingPreconditions, 1);
-					if (this.fieldsToRefactor.isEmpty())
-						status
-								.merge(RefactoringStatus
-										.createFatalErrorStatus(Messages.ConvertConstantsToEnumRefactoring_FieldsHaveNotBeenSpecified));
-			
-					else {
-						for (final Iterator it = this.fieldsToRefactor.listIterator(); it
-								.hasNext();) {
-							final IField field = (IField) it.next();
-							if (!field.exists()) {
-								String message = Messages.ConvertConstantsToEnumRefactoring_FileDoesNotExist;
-								status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
-								it.remove();
-							}
-			
-							else if (!field.isBinary()
-									&& !field.getCompilationUnit().isStructureKnown()) {
-								String message = Messages.ConvertConstantsToEnumRefactoring_CUContainsCompileErrors;
-								status.addWarning(MessageFormat.format(message, new Object[] {field.getCompilationUnit().getElementName()}));
-								it.remove();
-							}
-			
-							else if (field.getElementName().equals("serialVersionUID")) { //$NON-NLS-1$
-								String message = Messages.ConvertConstantsToEnumRefactoring_FieldNotEligibleForEnum;
-								status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
-								it.remove();
-							}
-			
-							else if (Signature.getTypeSignatureKind(field
-									.getTypeSignature()) != Signature.BASE_TYPE_SIGNATURE) {
-								String message = Messages.ConvertConstantsToEnumRefactoring_FieldMustBePrimitive;
-								status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
-								it.remove();
-							}
-			
-							else if (!Util.isConstantField(field)) {
-								String message = Messages.ConvertConstantsToEnumRefactoring_FieldIsNotAConstant;
-								status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
-								it.remove();
-							}
-			
-							else if (Flags.isVolatile(field.getFlags())
-									|| Flags.isTransient(field.getFlags())) {
-								String message = Messages.ConvertConstantsToEnumRefactoring_FieldCannotBeExpressedAsEnum;
-								status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
-								it.remove();
-							}
-			
-							if (Signature.getElementType(field.getTypeSignature()) == Signature.SIG_BOOLEAN) {
-								String message = Messages.ConvertConstantsToEnumRefactoring_FieldIsBoolean;
-								status
-										.addWarning(message);
-								status.addWarning(MessageFormat.format(message, new Object[] {field.getElementName()}));
-								it.remove();
-							}
-						}
-						if (this.fieldsToRefactor.isEmpty())
-							status
-									.addFatalError(Messages.ConvertConstantsToEnumRefactoring_PreconditionFailed);
+			// The compilation units needing to be altered mapped to the
+			// appropriate search matches.
+			final Map units = new HashMap();
+			for (final Iterator it = this.matchToPurposeMap.keySet().iterator(); it
+					.hasNext();) {
+				final SearchMatch match = (SearchMatch) it.next();
+				final IJavaElement element = (IJavaElement) match.getElement();
+				final ICompilationUnit unit = Util.getIMember(element)
+						.getCompilationUnit();
+				if (unit != null) {
+					Collection searchMatchCollection = (Collection) units
+							.get(unit);
+					if (searchMatchCollection == null) {
+						searchMatchCollection = new ArrayList();
+						units.put(unit, searchMatchCollection);
 					}
-			
-				} finally {
-					monitor.done();
+					searchMatchCollection.add(match);
 				}
-				return status;
 			}
+
+			final Map projects = new HashMap();
+			for (final Iterator it = units.keySet().iterator(); it.hasNext();) {
+				final ICompilationUnit unit = (ICompilationUnit) it.next();
+				final IJavaProject project = unit.getJavaProject();
+				if (project != null) {
+					Collection unitsCollection = (Collection) projects
+							.get(project);
+					if (unitsCollection == null) {
+						unitsCollection = new ArrayList();
+						projects.put(project, unitsCollection);
+					}
+					unitsCollection.add(unit);
+				}
+			}
+
+			final ASTRequestor requestor = new ASTRequestor() {
+
+				public void acceptAST(ICompilationUnit source,
+						CompilationUnit ast) {
+					try {
+						ConvertConstantsToEnumRefactoring.this
+								.rewriteCompilationUnit(source,
+										(Collection) units.get(source), ast,
+										status, monitor);
+					} catch (CoreException exception) {
+						ConvertConstantsToEnumRefactoringPlugin.getDefault()
+								.log(exception);
+					}
+				}
+			};
+
+			final IProgressMonitor subMonitor = new SubProgressMonitor(monitor,
+					1);
+			try {
+				final Set set = projects.keySet();
+				subMonitor
+						.beginTask(
+								Messages.ConvertConstantsToEnumRefactoring_CompilingSource,
+								set.size());
+
+				for (final Iterator it = set.iterator(); it.hasNext();) {
+					final IJavaProject project = (IJavaProject) it.next();
+					final ASTParser parser = ASTParser.newParser(AST.JLS8);
+					parser.setProject(project);
+					parser.setResolveBindings(true);
+					final Collection collection = (Collection) projects
+							.get(project);
+					parser.createASTs((ICompilationUnit[]) collection
+							.toArray(new ICompilationUnit[collection.size()]),
+							new String[0], requestor, new SubProgressMonitor(
+									subMonitor, 1));
+				}
+
+			} finally {
+				subMonitor.done();
+			}
+		} finally {
+			monitor.done();
+		}
+
+		status.merge(this.insertNewEnumType(monitor));
+		return status;
+	}
+
+	public RefactoringStatus checkInitialConditions(IProgressMonitor monitor)
+			throws CoreException, OperationCanceledException {
+		final RefactoringStatus status = new RefactoringStatus();
+		try {
+			monitor.beginTask(
+					Messages.ConvertConstantsToEnumRefactoring_CheckingPreconditions,
+					1);
+			if (this.fieldsToRefactor.isEmpty())
+				status.merge(RefactoringStatus
+						.createFatalErrorStatus(Messages.ConvertConstantsToEnumRefactoring_FieldsHaveNotBeenSpecified));
+
+			else {
+				for (final Iterator it = this.fieldsToRefactor.listIterator(); it
+						.hasNext();) {
+					final IField field = (IField) it.next();
+					if (!field.exists()) {
+						String message = Messages.ConvertConstantsToEnumRefactoring_FileDoesNotExist;
+						status.addWarning(MessageFormat.format(message,
+								new Object[] { field.getElementName() }));
+						it.remove();
+					}
+
+					else if (!field.isBinary()
+							&& !field.getCompilationUnit().isStructureKnown()) {
+						String message = Messages.ConvertConstantsToEnumRefactoring_CUContainsCompileErrors;
+						status.addWarning(MessageFormat.format(message,
+								new Object[] { field.getCompilationUnit()
+										.getElementName() }));
+						it.remove();
+					}
+
+					else if (field.getElementName().equals("serialVersionUID")) { //$NON-NLS-1$
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldNotEligibleForEnum;
+						status.addWarning(MessageFormat.format(message,
+								new Object[] { field.getElementName() }));
+						it.remove();
+					}
+
+					else if (Signature.getTypeSignatureKind(field
+							.getTypeSignature()) != Signature.BASE_TYPE_SIGNATURE) {
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldMustBePrimitive;
+						status.addWarning(MessageFormat.format(message,
+								new Object[] { field.getElementName() }));
+						it.remove();
+					}
+
+					else if (!Util.isConstantField(field)) {
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldIsNotAConstant;
+						status.addWarning(MessageFormat.format(message,
+								new Object[] { field.getElementName() }));
+						it.remove();
+					}
+
+					else if (Flags.isVolatile(field.getFlags())
+							|| Flags.isTransient(field.getFlags())) {
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldCannotBeExpressedAsEnum;
+						status.addWarning(MessageFormat.format(message,
+								new Object[] { field.getElementName() }));
+						it.remove();
+					}
+
+					if (Signature.getElementType(field.getTypeSignature()) == Signature.SIG_BOOLEAN) {
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldIsBoolean;
+						status.addWarning(message);
+						status.addWarning(MessageFormat.format(message,
+								new Object[] { field.getElementName() }));
+						it.remove();
+					}
+				}
+				if (this.fieldsToRefactor.isEmpty())
+					status.addFatalError(Messages.ConvertConstantsToEnumRefactoring_PreconditionFailed);
+			}
+
+		} finally {
+			monitor.done();
+		}
+		return status;
+	}
 
 	public Change createChange(IProgressMonitor monitor) throws CoreException,
 			OperationCanceledException {
-				try {
-					monitor.beginTask(Messages.ConvertConstantsToEnumRefactoring_CreatingChange, 1);
-					final Collection changes = this.changes.values();
-					final CompositeChange change = new CompositeChange(this.getName(),
-							(Change[]) changes.toArray(new Change[changes.size()])) {
-						public ChangeDescriptor getDescriptor() {
-							String project = ConvertConstantsToEnumRefactoring.this
-									.getJavaProject().getElementName();
-							String description = Messages.ConvertConstantsToEnum_Name;
-							Map arguments = new HashMap();
-							return new RefactoringChangeDescriptor(
-									new ConvertConstantsToEnumDescriptor(project,
-											description, new String(), arguments));
-						}
-					};
-					return change;
-				} finally {
-					monitor.done();
+		try {
+			monitor.beginTask(
+					Messages.ConvertConstantsToEnumRefactoring_CreatingChange,
+					1);
+			final Collection changes = this.changes.values();
+			final CompositeChange change = new CompositeChange(this.getName(),
+					(Change[]) changes.toArray(new Change[changes.size()])) {
+				public ChangeDescriptor getDescriptor() {
+					String project = ConvertConstantsToEnumRefactoring.this
+							.getJavaProject().getElementName();
+					String description = Messages.ConvertConstantsToEnum_Name;
+					Map arguments = new HashMap();
+					return new RefactoringChangeDescriptor(
+							new ConvertConstantsToEnumDescriptor(project,
+									description, new String(), arguments));
 				}
-			}
+			};
+			return change;
+		} finally {
+			monitor.done();
+		}
+	}
 
 	public String getName() {
 		return Messages.ConvertConstantsToEnum_Name;

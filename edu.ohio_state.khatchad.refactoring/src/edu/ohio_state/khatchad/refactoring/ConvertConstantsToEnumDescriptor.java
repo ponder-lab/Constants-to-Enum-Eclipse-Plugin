@@ -13,7 +13,7 @@ public class ConvertConstantsToEnumDescriptor extends RefactoringDescriptor {
 			String comment, Map arguments) {
 		super(REFACTORING_ID, project, description, comment, arguments);
 	}
-	
+
 	public Refactoring createRefactoring() {
 		return new ConvertConstantsToEnumRefactoring();
 	}

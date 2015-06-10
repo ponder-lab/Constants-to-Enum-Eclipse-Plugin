@@ -21,6 +21,7 @@ import org.eclipse.jdt.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.swt.widgets.Shell;
 
+import edu.cuny.citytech.refactoring.common.Refactoring;
 import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoring;
 import edu.ohio_state.khatchad.refactoring.Messages;
 
@@ -32,7 +33,7 @@ public class ConvertConstantsToEnumWizard extends RefactoringWizard {
 	private static final String TYPE_PAGE_NAME = "convert.to.enum.type.page"; //$NON-NLS-1$
 
 	public ConvertConstantsToEnumWizard(
-			ConvertConstantsToEnumRefactoring refactoring, String pageTitle) {
+			Refactoring refactoring, String pageTitle) {
 		super(refactoring, WIZARD_BASED_USER_INTERFACE
 				| PREVIEW_EXPAND_FIRST_NODE);
 		setDefaultPageTitle(pageTitle);
@@ -50,7 +51,7 @@ public class ConvertConstantsToEnumWizard extends RefactoringWizard {
 	public static void startConvertConstantsToEnumRefactoring(
 			final IField[] fields, final Shell shell) throws JavaModelException {
 		List fieldsToRefactor = Arrays.asList(fields);
-		ConvertConstantsToEnumRefactoring convertConstantsToEnumRefactoring = new ConvertConstantsToEnumRefactoring(
+		Refactoring convertConstantsToEnumRefactoring = new ConvertConstantsToEnumRefactoring(
 				fieldsToRefactor);
 		ConvertConstantsToEnumWizard wizard = new ConvertConstantsToEnumWizard(
 				convertConstantsToEnumRefactoring,
