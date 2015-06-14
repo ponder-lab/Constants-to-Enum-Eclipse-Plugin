@@ -49,7 +49,7 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 		return null;
 	}
 
-	private List getSelectedFields(ISelection selection) {
+	private static List getSelectedFields(ISelection selection) {
 		List selectedFields = new ArrayList();
 		if (selection instanceof IStructuredSelection) {
 			final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
