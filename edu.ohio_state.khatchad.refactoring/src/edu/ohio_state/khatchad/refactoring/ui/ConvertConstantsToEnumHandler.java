@@ -35,7 +35,7 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 		ISelection currentSelection = HandlerUtil
 				.getCurrentSelectionChecked(event);
 
-		List selectedFields = getSelectedFields(currentSelection);
+		List selectedFields = getFields(currentSelection);
 		try {
 			Shell shell = HandlerUtil.getActiveShellChecked(event);
 			IField[] fields = (IField[]) selectedFields
@@ -49,19 +49,19 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 		return null;
 	}
 
-	private static List getSelectedFields(ISelection selection) {
-		List selectedFields = new ArrayList();
+	private List getFields(ISelection selection) {
+		List fields = new ArrayList();
 		if (selection instanceof IStructuredSelection) {
 			final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 			Iterator iterator = structuredSelection.iterator();
 			while (iterator.hasNext()) {
 				Object selectedObject = iterator.next();
 				if (selectedObject instanceof IField) {
-					selectedFields.add(selectedObject);
+					fields.add(selectedObject);
 				}
 			}
 		}
-		return selectedFields;
+		return fields;
 	}
 
 }
