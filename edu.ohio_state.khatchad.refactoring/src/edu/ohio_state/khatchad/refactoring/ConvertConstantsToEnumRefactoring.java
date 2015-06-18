@@ -204,16 +204,14 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	private String getFullyQualifiedName(IJavaElement elem) {
 		// Get the associated set.
 		Collection set = null;
-		for (final Iterator it = this.computer.getEnumerizationForest()
-				.iterator(); it.hasNext();) {
+		for (final Iterator it = this.computer.getEnumerizationForest().iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
 			if (col.contains(elem))
 				set = col;
 		}
 
 		// Get the fully qualified type name.
-		final StringBuffer fqn = new StringBuffer(this.simpleTypeNames.get(set)
-				.toString());
+		final StringBuffer fqn = new StringBuffer(this.simpleTypeNames.get(set).toString());
 		fqn.insert(0, '.');
 		fqn.insert(0, this.packageNames.get(set));
 		return fqn.toString();
