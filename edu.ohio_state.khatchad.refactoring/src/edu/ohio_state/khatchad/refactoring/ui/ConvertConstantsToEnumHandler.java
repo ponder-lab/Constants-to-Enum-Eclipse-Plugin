@@ -11,6 +11,7 @@
 package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -58,9 +60,40 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 				Object selectedObject = iterator.next();
 				if (selectedObject instanceof IField) {
 					fields.add(selectedObject);
+				} else if (selectedObject instanceof IType) {
+					// need to traverse each of the fields of the selected
+					// object.
+					IType type = (IType) selectedObject;
+					fields.addAll(getFields(type)); 
 				}
 			}
 		}
+		return fields;
+	}
+
+	/**
+	 * @param type
+	 * @param fields
+	 */
+	public List getFields(IType type) {
+		List fields = new ArrayList();
+		
+		try {
+			IField[] fieldsOfType = type.getFields();
+			fields.addAll(Arrays.asList(fieldsOfType));
+		} catch (JavaModelException e) {
+		}
+		
+		//check for inner classes.
+		try {
+			IType[] innerTypes = type.getTypes();
+			for (int i = 0; i < innerTypes.length; i++) {
+				IType innerType = innerTypes[i];
+				fields.addAll(getFields(innerType));
+			}
+		} catch (JavaModelException e) {
+		}
+		
 		return fields;
 	}
 
