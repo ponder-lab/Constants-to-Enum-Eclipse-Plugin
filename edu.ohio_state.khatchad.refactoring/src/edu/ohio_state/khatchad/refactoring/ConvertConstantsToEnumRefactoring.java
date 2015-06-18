@@ -945,7 +945,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 						.hasNext();) {
 					final IField field = (IField) it.next();
 					if (!field.exists()) {
-						String message = Messages.ConvertConstantsToEnumRefactoring_FileDoesNotExist;
+						String message = Messages.ConvertConstantsToEnumRefactoring_FieldDoesNotExist;
 						status.addWarning(MessageFormat.format(message,
 								new Object[] { field.getElementName() }));
 						it.remove();
