@@ -24,7 +24,7 @@ public class Messages extends NLS {
 	public static String ConvertConstantsToEnumRefactoring_FieldMustBePrimitive;
 	public static String ConvertConstantsToEnumRefactoring_FieldNotEligibleForEnum;
 	public static String ConvertConstantsToEnumRefactoring_FieldsHaveNotBeenSpecified;
-	public static String ConvertConstantsToEnumRefactoring_FileDoesNotExist;
+	public static String ConvertConstantsToEnumRefactoring_FieldDoesNotExist;
 	public static String ConvertConstantsToEnumRefactoring_PreconditionFailed;
 	public static String ConvertConstantsToEnumRefactoring_RefactoringNotPossible;
 	public static String ConvertConstantsToEnumRefactoring_WrongType;
