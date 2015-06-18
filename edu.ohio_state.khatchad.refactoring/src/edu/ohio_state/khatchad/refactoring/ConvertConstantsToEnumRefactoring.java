@@ -89,6 +89,7 @@ import edu.ohio_state.khatchad.refactoring.core.Util;
 
 public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
+	//what is this SearchMatchPurose class doing
 	static class SearchMatchPurpose {
 		public static final SearchMatchPurpose ALTER_INFIX_EXPRESSION = new SearchMatchPurpose();
 		public static final SearchMatchPurpose ALTER_NAMESPACE_PREFIX = new SearchMatchPurpose();
@@ -106,8 +107,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 			public void acceptSearchMatch(SearchMatch match)
 					throws CoreException {
-				if (match.getAccuracy() == SearchMatch.A_ACCURATE
-						&& !match.isInsideDocComment())
+				if (match.getAccuracy() == SearchMatch.A_ACCURATE && !match.isInsideDocComment())
 					matchToPurposeMap.put(match, purpose);
 			}
 		}, new SubProgressMonitor(monitor, 1,
@@ -117,8 +117,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	private static EnumConstantDeclaration createNewEnumConstantDeclarataion(
 			AST ast, SimpleName constantName, Javadoc docComment,
 			Collection annotationCollection) {
-		final EnumConstantDeclaration enumConstDecl = ast
-				.newEnumConstantDeclaration();
+		final EnumConstantDeclaration enumConstDecl = ast.newEnumConstantDeclaration();
 		enumConstDecl.setJavadoc(docComment);
 		enumConstDecl.setName(constantName);
 		enumConstDecl.modifiers().addAll(annotationCollection);
@@ -221,13 +220,13 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	}
 
 	/**
-	 * @return
+	 * @return getting all the Field 
 	 */
-	IJavaProject getJavaProject() {
+	IJavaProject getJavaIField() {
 		/*
-		 * TODO: Just a simulation
+		 * TODO: Just a simulation all individual IField
 		 */
-		return ((IField) this.fieldsToRefactor.iterator().next())
+		return ((IField) this.fieldsToRefactor.iterator().next()) 
 				.getJavaProject();
 	}
 
@@ -250,7 +249,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		/*
 		 * TODO: Just a simulation
 		 */
-		final IJavaProject project = this.getJavaProject();
+		final IJavaProject project = this.getJavaIField();
 		return project.getPackageFragmentRoots()[0];
 	}
 
@@ -1019,7 +1018,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 					(Change[]) changes.toArray(new Change[changes.size()])) {
 				public ChangeDescriptor getDescriptor() {
 					String project = ConvertConstantsToEnumRefactoring.this
-							.getJavaProject().getElementName();
+							.getJavaIField().getElementName();
 					String description = Messages.ConvertConstantsToEnum_Name;
 					Map arguments = new HashMap();
 					return new RefactoringChangeDescriptor(
