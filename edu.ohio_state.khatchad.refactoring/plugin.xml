@@ -38,6 +38,20 @@
 		                  value="org.eclipse.jdt.core.IType"> 
 		            </instanceof> 
 		         </iterate>
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
+		                  value="org.eclipse.jdt.core.ICompilationUnit"> 
+		            </instanceof> 
+		         </iterate>
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
+		                  value="org.eclipse.jdt.core.IJavaProject"> 
+		            </instanceof> 
+		         </iterate>
 	         </or>
 	      </with> 
         </activeWhen> 

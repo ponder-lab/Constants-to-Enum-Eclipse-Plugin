@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2009 Benjamin Muskalla and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     Benjamin Muskalla - initial API and implementation
- *******************************************************************************/
 package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.util.ArrayList;
@@ -18,7 +8,9 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.ISelection;
@@ -65,6 +57,40 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 					// object.
 					IType type = (IType) selectedObject;
 					fields.addAll(getFields(type)); 
+				} 
+				//Issue: Having null pointer exception when there is a inner class, other-wise working 
+				//this condition check if the class compilationUnit get selected, it will convert all possible IFields to Enum
+				else if (selectedObject instanceof ICompilationUnit) {
+					// need to traverse each of the fields of the selected
+					ICompilationUnit compilationType = (ICompilationUnit) selectedObject;
+					IType[] compilationArray = null;
+					try {
+						compilationArray = compilationType.getAllTypes();
+					} catch (JavaModelException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					for (int i = 0; i < compilationArray.length; i++) {
+						fields.addAll(getFields(compilationArray[i])); 
+					}
+				}
+				//Issue: Having null pointer exception when there is a inner class, other-wise working 
+				//this condition check if a javaProjects get selected, it will convert all possible IFields to Enum
+				else if (selectedObject instanceof IJavaProject) {
+					// need to traverse each of the fields of the selected
+					IJavaProject projectType = (IJavaProject) selectedObject;
+					IType[] jprojectsArray = null;
+					try {
+						jprojectsArray = (IType[]) projectType.getChildren();//need to get all the types or fields. get children not working 
+					} catch (JavaModelException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					for (int i = 0; i < jprojectsArray.length; i++) {
+						fields.addAll(getFields(jprojectsArray[i])); 
+					}
 				}
 			}
 		}
@@ -75,6 +101,7 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 	 * @param type
 	 * @param fields
 	 */
+	//this method will get all the filed of class if IType
 	public List getFields(IType type) {
 		List fields = new ArrayList();
 		
