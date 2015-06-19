@@ -2,8 +2,10 @@ package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -58,7 +60,7 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 					IType type = (IType) selectedObject;
 					fields.addAll(getFields(type)); 
 				} 
-				//Issue: Having null pointer exception when there is a inner class, other-wise working 
+				
 				//this condition check if the class compilationUnit get selected, it will convert all possible IFields to Enum
 				else if (selectedObject instanceof ICompilationUnit) {
 					// need to traverse each of the fields of the selected
@@ -70,12 +72,17 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+					//Adding a HasSet to remove duplicates
+					Set hs = new HashSet();
 					for (int i = 0; i < compilationArray.length; i++) {
 						fields.addAll(getFields(compilationArray[i])); 
 					}
+					//removing duplicates
+					hs.addAll(fields);
+					fields.clear();
+					fields.addAll(hs);
 				}
-				//Issue: Having null pointer exception when there is a inner class, other-wise working 
+				//Issue: Need a exact method to find the ITypes / Ifields
 				//this condition check if a javaProjects get selected, it will convert all possible IFields to Enum
 				else if (selectedObject instanceof IJavaProject) {
 					// need to traverse each of the fields of the selected
