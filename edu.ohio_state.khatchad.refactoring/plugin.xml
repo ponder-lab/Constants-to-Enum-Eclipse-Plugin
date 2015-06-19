@@ -49,6 +49,13 @@
 	                ifEmpty="false"
 	                operator="or"> 
 		            <instanceof 
+		                  value="org.eclipse.jdt.core.IPackageFragmentRoot"> 
+		            </instanceof> 
+		         </iterate>
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
 		                  value="org.eclipse.jdt.core.IJavaProject"> 
 		            </instanceof> 
 		         </iterate>
