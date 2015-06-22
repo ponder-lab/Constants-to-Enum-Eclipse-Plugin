@@ -22,14 +22,52 @@
             commandId="org.eclipse.convert.fields.to.enum">
         <activeWhen> 
 	      <with 
-	            variable="selection"> 
-	         <iterate
-                ifEmpty="false"
-                operator="or"> 
-	            <instanceof 
-	                  value="org.eclipse.jdt.core.IField"> 
-	            </instanceof> 
-	         </iterate> 
+	            variable="selection">
+	         <or> 
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
+		                  value="org.eclipse.jdt.core.IField"> 
+		            </instanceof> 
+		         </iterate> 
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
+		                  value="org.eclipse.jdt.core.IType"> 
+		            </instanceof> 
+		         </iterate>
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
+		                  value="org.eclipse.jdt.core.ICompilationUnit"> 
+		            </instanceof> 
+		         </iterate>
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
+		                  value="org.eclipse.jdt.core.IPackageFragment"> 
+		            </instanceof> 
+		         </iterate>
+		         
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
+		                  value="org.eclipse.jdt.core.IPackageFragmentRoot"> 
+		            </instanceof> 
+		         </iterate>
+		         <iterate
+	                ifEmpty="false"
+	                operator="or"> 
+		            <instanceof 
+		                  value="org.eclipse.jdt.core.IJavaProject"> 
+		            </instanceof> 
+		         </iterate>
+	         </or>
 	      </with> 
         </activeWhen> 
       </handler>
