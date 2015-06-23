@@ -79,7 +79,6 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 						fields.clear();
 						fields.addAll(hs);
 					} catch (JavaModelException e) {}
-					
 				}
 				//Issue: Need a exact method to find the ITypes / Ifields Working 
 				//this condition check if a package get selected, it will convert all possible IFields to Enum
@@ -106,7 +105,6 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 	 * @param type
 	 * @param fields
 	 */
-	//this method will get all the filed of class if IType
 	public List getFields(IType type) {
 		List fields = new ArrayList();
 		
