@@ -227,7 +227,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		/*
 		 * TODO: Just a simulation
 		 */
-		return ((IField) this.fieldsToRefactor.iterator().next()) 
+		return ((IField) this.fieldsToRefactor.iterator().next())
 				.getJavaProject();
 	}
 
