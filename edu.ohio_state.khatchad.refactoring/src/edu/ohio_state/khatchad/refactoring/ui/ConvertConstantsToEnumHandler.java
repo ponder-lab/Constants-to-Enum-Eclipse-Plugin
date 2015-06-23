@@ -59,43 +59,47 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 					// need to traverse each of the fields of the selected
 					// object.
 					IType type = (IType) selectedObject;
-					fields.addAll(getFields(type)); 
-				} 
-				
-				//this condition check if the class compilationUnit get selected, it will convert all possible IFields to Enum
+					fields.addAll(getFields(type));
+				}
+
+				// this condition check if the class compilationUnit get
+				// selected, it will convert all possible IFields to Enum
 				else if (selectedObject instanceof ICompilationUnit) {
 					// need to traverse each of the fields of the selected
 					ICompilationUnit compilationType = (ICompilationUnit) selectedObject;
 					IType[] compilationArray = null;
 					try {
 						compilationArray = compilationType.getAllTypes();
-						//Adding a HasSet to remove duplicates
+						// Adding a HasSet to remove duplicates
 						Set hs = new HashSet();
 						for (int i = 0; i < compilationArray.length; i++) {
-							fields.addAll(getFields(compilationArray[i])); 
+							fields.addAll(getFields(compilationArray[i]));
 						}
-						//removing duplicates
+						// removing duplicates
 						hs.addAll(fields);
 						fields.clear();
 						fields.addAll(hs);
 					} catch (JavaModelException e) {
 						e.printStackTrace();
 					}
-					
+
 				}
-				
-				//this condition check if a javaProjects get selected, it will convert all possible IFields to Enum
+
+				// this condition check if a javaProjects get selected, it will
+				// convert all possible IFields to Enum
 				else if (selectedObject instanceof IPackageFragment) {
 					// need to traverse each of the fields of the selected
 					IPackageFragment projectType = (IPackageFragment) selectedObject;
 					IType[] jpackageArray = null;
 					try {
-						jpackageArray =  ((ICompilationUnit) projectType).getAllTypes();//get all the types or fields 
-						
+						jpackageArray = ((ICompilationUnit) projectType)
+								.getAllTypes();// get all the types or fields
+
 						for (int i = 0; i < jpackageArray.length; i++) {
-							fields.addAll(getFields(jpackageArray[i])); 
+							fields.addAll(getFields(jpackageArray[i]));
 						}
-					} catch (JavaModelException e) {}
+					} catch (JavaModelException e) {
+					}
 				}
 			}
 		}
@@ -108,14 +112,14 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 	 */
 	public List getFields(IType type) {
 		List fields = new ArrayList();
-		
+
 		try {
 			IField[] fieldsOfType = type.getFields();
 			fields.addAll(Arrays.asList(fieldsOfType));
 		} catch (JavaModelException e) {
 		}
-		
-		//check for inner classes.
+
+		// check for inner classes.
 		try {
 			IType[] innerTypes = type.getTypes();
 			for (int i = 0; i < innerTypes.length; i++) {
@@ -124,7 +128,7 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 			}
 		} catch (JavaModelException e) {
 		}
-		
+
 		return fields;
 	}
 
