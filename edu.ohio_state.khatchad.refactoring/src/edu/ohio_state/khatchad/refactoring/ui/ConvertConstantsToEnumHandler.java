@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Benjamin Muskalla and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Benjamin Muskalla - initial API and implementation
+ *******************************************************************************/
 package edu.ohio_state.khatchad.refactoring.ui;
 
 import java.util.ArrayList;
