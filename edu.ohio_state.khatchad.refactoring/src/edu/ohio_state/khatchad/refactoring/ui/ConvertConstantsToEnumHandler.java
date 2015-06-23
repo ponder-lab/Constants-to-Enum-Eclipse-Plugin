@@ -13,6 +13,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.ISelection;
@@ -68,36 +69,33 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 					IType[] compilationArray = null;
 					try {
 						compilationArray = compilationType.getAllTypes();
-					} catch (JavaModelException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					//Adding a HasSet to remove duplicates
-					Set hs = new HashSet();
-					for (int i = 0; i < compilationArray.length; i++) {
-						fields.addAll(getFields(compilationArray[i])); 
-					}
-					//removing duplicates
-					hs.addAll(fields);
-					fields.clear();
-					fields.addAll(hs);
+						//Adding a HasSet to remove duplicates
+						Set hs = new HashSet();
+						for (int i = 0; i < compilationArray.length; i++) {
+							fields.addAll(getFields(compilationArray[i])); 
+						}
+						//removing duplicates
+						hs.addAll(fields);
+						fields.clear();
+						fields.addAll(hs);
+					} catch (JavaModelException e) {}
+					
 				}
-				//Issue: Need a exact method to find the ITypes / Ifields
-				//this condition check if a javaProjects get selected, it will convert all possible IFields to Enum
-				else if (selectedObject instanceof IJavaProject) {
+				//Issue: Need a exact method to find the ITypes / Ifields Working 
+				//this condition check if a package get selected, it will convert all possible IFields to Enum
+				else if (selectedObject instanceof IPackageFragment) {
 					// need to traverse each of the fields of the selected
-					IJavaProject projectType = (IJavaProject) selectedObject;
+					IPackageFragment projectFr = (IPackageFragment) selectedObject;
 					IType[] jprojectsArray = null;
 					try {
-						jprojectsArray = (IType[]) projectType.getChildren();//need to get all the types or fields. get children not working 
-					} catch (JavaModelException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+						jprojectsArray = ((ICompilationUnit) projectFr).getAllTypes();//need to get all the types or fields. get children not working
+						for (int i = 0; i < jprojectsArray.length; i++) {
+							
+							fields.addAll(getFields(jprojectsArray[i])); 
+						}
+					} catch (JavaModelException e) {}
 					
-					for (int i = 0; i < jprojectsArray.length; i++) {
-						fields.addAll(getFields(jprojectsArray[i])); 
-					}
+					
 				}
 			}
 		}
