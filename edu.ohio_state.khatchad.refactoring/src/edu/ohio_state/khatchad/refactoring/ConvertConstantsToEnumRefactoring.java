@@ -89,7 +89,6 @@ import edu.ohio_state.khatchad.refactoring.core.Util;
 
 public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
-	//what is this SearchMatchPurose class doing
 	static class SearchMatchPurpose {
 		public static final SearchMatchPurpose ALTER_INFIX_EXPRESSION = new SearchMatchPurpose();
 		public static final SearchMatchPurpose ALTER_NAMESPACE_PREFIX = new SearchMatchPurpose();
@@ -107,7 +106,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 
 			public void acceptSearchMatch(SearchMatch match)
 					throws CoreException {
-				if (match.getAccuracy() == SearchMatch.A_ACCURATE && !match.isInsideDocComment())
+				if (match.getAccuracy() == SearchMatch.A_ACCURATE
+						&& !match.isInsideDocComment())
 					matchToPurposeMap.put(match, purpose);
 			}
 		}, new SubProgressMonitor(monitor, 1,
@@ -117,7 +117,8 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	private static EnumConstantDeclaration createNewEnumConstantDeclarataion(
 			AST ast, SimpleName constantName, Javadoc docComment,
 			Collection annotationCollection) {
-		final EnumConstantDeclaration enumConstDecl = ast.newEnumConstantDeclaration();
+		final EnumConstantDeclaration enumConstDecl = ast
+				.newEnumConstantDeclaration();
 		enumConstDecl.setJavadoc(docComment);
 		enumConstDecl.setName(constantName);
 		enumConstDecl.modifiers().addAll(annotationCollection);
@@ -204,27 +205,29 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 	private String getFullyQualifiedName(IJavaElement elem) {
 		// Get the associated set.
 		Collection set = null;
-		for (final Iterator it = this.computer.getEnumerizationForest().iterator(); it.hasNext();) {
+		for (final Iterator it = this.computer.getEnumerizationForest()
+				.iterator(); it.hasNext();) {
 			final Collection col = (Collection) it.next();
 			if (col.contains(elem))
 				set = col;
 		}
 
 		// Get the fully qualified type name.
-		final StringBuffer fqn = new StringBuffer(this.simpleTypeNames.get(set).toString());
+		final StringBuffer fqn = new StringBuffer(this.simpleTypeNames.get(set)
+				.toString());
 		fqn.insert(0, '.');
 		fqn.insert(0, this.packageNames.get(set));
 		return fqn.toString();
 	}
 
 	/**
-	 * @return getting all the Field 
+	 * @return
 	 */
-	IJavaProject getJavaIField() {
+	IJavaProject getJavaProject() {
 		/*
-		 * TODO: Just a simulation all individual IField
+		 * TODO: Just a simulation
 		 */
-		return ((IField) this.fieldsToRefactor.iterator().next()) 
+		return ((IField) this.fieldsToRefactor.iterator().next())
 				.getJavaProject();
 	}
 
@@ -247,7 +250,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 		/*
 		 * TODO: Just a simulation
 		 */
-		final IJavaProject project = this.getJavaIField();
+		final IJavaProject project = this.getJavaProject();
 		return project.getPackageFragmentRoots()[0];
 	}
 
@@ -1016,7 +1019,7 @@ public class ConvertConstantsToEnumRefactoring extends Refactoring {
 					(Change[]) changes.toArray(new Change[changes.size()])) {
 				public ChangeDescriptor getDescriptor() {
 					String project = ConvertConstantsToEnumRefactoring.this
-							.getJavaIField().getElementName();
+							.getJavaProject().getElementName();
 					String description = Messages.ConvertConstantsToEnum_Name;
 					Map arguments = new HashMap();
 					return new RefactoringChangeDescriptor(

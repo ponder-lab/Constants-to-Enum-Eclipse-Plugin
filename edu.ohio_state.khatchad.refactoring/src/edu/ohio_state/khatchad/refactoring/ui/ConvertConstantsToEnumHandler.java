@@ -84,14 +84,14 @@ public class ConvertConstantsToEnumHandler extends AbstractHandler {
 					}
 					
 				}
-				//Issue: Need a exact method to find the ITypes / Ifields
+				
 				//this condition check if a javaProjects get selected, it will convert all possible IFields to Enum
 				else if (selectedObject instanceof IPackageFragment) {
 					// need to traverse each of the fields of the selected
 					IPackageFragment projectType = (IPackageFragment) selectedObject;
 					IType[] jpackageArray = null;
 					try {
-						jpackageArray =  ((ICompilationUnit) projectType).getAllTypes();//need to get all the types or fields. get children not working 
+						jpackageArray =  ((ICompilationUnit) projectType).getAllTypes();//get all the types or fields 
 						
 						for (int i = 0; i < jpackageArray.length; i++) {
 							fields.addAll(getFields(jpackageArray[i])); 
