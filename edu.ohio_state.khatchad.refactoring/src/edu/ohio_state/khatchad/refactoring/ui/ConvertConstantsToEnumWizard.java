@@ -21,7 +21,7 @@ import org.eclipse.jdt.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.swt.widgets.Shell;
 
-import edu.cuny.citytech.refactoring.common.Refactoring;
+import edu.cuny.citytech.refactoring.common.core.Refactoring;
 import edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoring;
 import edu.ohio_state.khatchad.refactoring.Messages;
 

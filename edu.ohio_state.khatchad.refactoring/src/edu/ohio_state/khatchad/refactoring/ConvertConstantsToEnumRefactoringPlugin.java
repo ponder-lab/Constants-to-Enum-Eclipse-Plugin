@@ -2,7 +2,7 @@ package edu.ohio_state.khatchad.refactoring;
 
 import org.osgi.framework.BundleContext;
 
-import edu.cuny.citytech.refactoring.common.RefactoringPlugin;
+import edu.cuny.citytech.refactoring.common.ui.RefactoringPlugin;
 
 
 public class ConvertConstantsToEnumRefactoringPlugin extends RefactoringPlugin {
@@ -24,7 +24,7 @@ public class ConvertConstantsToEnumRefactoringPlugin extends RefactoringPlugin {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.cuny.citytech.refactoring.common.RefactoringPlugin#getRefactoringId()
+	 * @see edu.cuny.citytech.refactoring.common.ui.RefactoringPlugin#getRefactoringId()
 	 */
 	protected String getRefactoringId() {
 		return ConvertConstantsToEnumDescriptor.REFACTORING_ID;

@@ -2,8 +2,8 @@ package edu.ohio_state.khatchad.refactoring;
 
 import java.util.Map;
 
-import edu.cuny.citytech.refactoring.common.Refactoring;
-import edu.cuny.citytech.refactoring.common.RefactoringDescriptor;
+import edu.cuny.citytech.refactoring.common.core.Refactoring;
+import edu.cuny.citytech.refactoring.common.core.RefactoringDescriptor;
 
 public class ConvertConstantsToEnumDescriptor extends RefactoringDescriptor {
 

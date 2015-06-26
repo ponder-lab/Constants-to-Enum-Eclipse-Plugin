@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: edu.ohio_state.khatchad.refactoring;singleton:=true
-Bundle-Version: 1.0.1
+Bundle-Version: 1.1.0
 Bundle-Activator: edu.ohio_state.khatchad.refactoring.ConvertConstantsToEnumRefactoringPlugin
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: bundle
@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.ui,
  org.eclipse.jface.text,
  org.eclipse.core.resources,
- edu.cuny.citytech.refactoring.common;bundle-version="1.0.0"
+ edu.cuny.citytech.refactoring.common.core;bundle-version="1.1.0",
+ edu.cuny.citytech.refactoring.common.ui;bundle-version="1.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Import-Package: edu.cuny.citytech.refactoring.common

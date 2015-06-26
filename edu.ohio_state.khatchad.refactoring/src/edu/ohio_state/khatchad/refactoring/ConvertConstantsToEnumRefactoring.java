@@ -81,7 +81,7 @@ import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEdit;
 
-import edu.cuny.citytech.refactoring.common.Refactoring;
+import edu.cuny.citytech.refactoring.common.core.Refactoring;
 import edu.ohio_state.khatchad.refactoring.core.EnumConstantComparator;
 import edu.ohio_state.khatchad.refactoring.core.EnumerizationComputer;
 import edu.ohio_state.khatchad.refactoring.core.InternalStateStatus;
