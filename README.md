@@ -41,6 +41,6 @@ Note that this plugin depends on https://github.com/khatchad/edu.cuny.citytech.r
 - [Update site](https://raw.githubusercontent.com/khatchad/constants-to-enum-eclipse-plugin/master/edu.ohio_state.cse.khatchad.refactoring.updatesite)
 
 ## Groups
-[Development discussion](http://groups.google.com/group/convert-constants-to-enum-dev)
-[Issue updates](http://groups.google.com/group/convert-constants-to-enum-issues)
-[Commits](http://groups.google.com/group/convert-constants-to-enum-commits)
+- [Development discussion](http://groups.google.com/group/convert-constants-to-enum-dev)
+- [Issue updates](http://groups.google.com/group/convert-constants-to-enum-issues)
+- [Commits](http://groups.google.com/group/convert-constants-to-enum-commits)
