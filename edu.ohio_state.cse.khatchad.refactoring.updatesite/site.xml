@@ -3,12 +3,5 @@
    <description name="Convert Constants to Enum Update Site" url="http://constants-to-enum-eclipse-plugin.googlecode.com/svn/edu.ohio_state.cse.khatchad.refactoring.updatesite">
       Update site for the Convert Constants to Enum refactoring.
    </description>
-   <feature url="features/edu.ohio_state.cse.khatchad.refactoring.feature_0.1.0.jar" id="edu.ohio_state.cse.khatchad.refactoring.feature" version="0.1">
-      <category name="edu.ohio_state.cse.khatchad.refactoring.category"/>
-   </feature>
-   <category-def name="edu.ohio_state.cse.khatchad.refactoring.category" label="Convert Constants to Enum Category">
-      <description>
-         The main category for the Convert Constants to Enum refactoring.
-      </description>
-   </category-def>
+   <feature url="features/edu.ohio_state.cse.khatchad.refactoring.feature_0.2.0.jar" id="edu.ohio_state.cse.khatchad.refactoring.feature" version="0.2"/>
 </site>

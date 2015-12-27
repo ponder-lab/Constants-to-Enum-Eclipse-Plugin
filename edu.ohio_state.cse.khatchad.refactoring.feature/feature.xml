@@ -2,7 +2,7 @@
 <feature
       id="edu.ohio_state.cse.khatchad.refactoring.feature"
       label="Convert Constants to Enum Refactoring Feature"
-      version="0.1"
+      version="0.2"
       provider-name="Ohio State University">
 
    <description url="http://code.google.com/p/constants-to-enum-eclipse-plugin">
