@@ -1,4 +1,5 @@
 # Constants to Enum Eclipse Plugin
+ [![Java profiler](https://www.ej-technologies.com/images/product_banners/jprofiler_small.png)](https://www.ej-technologies.com/products/jprofiler/overview.html)
 
 ![https://raw.githubusercontent.com/khatchad/constants-to-enum-eclipse-plugin/master/edu.ohio_state.khatchad.refactoring/icons/full/wizban/constantstoenum_wiz.png](https://raw.githubusercontent.com/khatchad/constants-to-enum-eclipse-plugin/master/edu.ohio_state.khatchad.refactoring/icons/full/wizban/constantstoenum_wiz.png) A research prototype Eclipse plugin that refactors Java legacy code to make use of the new enum program construct that was introduced in Java 5.
 
